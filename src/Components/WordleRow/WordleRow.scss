@@ -1,0 +1,29 @@
+@import '../../helpers.scss';
+
+.wordle-row {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+  .wordle-tile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    width: 60px;
+    background: $tertiary-background;
+    font-size: toRem(30);
+    font-weight: 600;
+  }
+  .wordle-tile.eq {
+    background: $success-green;
+  }
+  .wordle-tile.in {
+    background: $warning-yellow;
+  }
+  .wordle-tile.nin {
+    background: $secondary-background;
+  }
+}
+.wordle-row.invalid {
+  color: $error-red;
+}

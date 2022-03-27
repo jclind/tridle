@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap');
+@import './helpers.scss';
+
+* {
+  font-family: $font-family;
+  letter-spacing: 0.05em;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  // background: red;
+  overflow: hidden;
+}
+html {
+  overflow: hidden;
+}
+html,
+body {
+  height: 100%;
+  overflow-x: hidden;
+}
+body {
+  color: $primary-text;
+  position: relative;
+  width: 100%;
+  background: $primary-background;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: toRem(24);
+}
+h3 {
+  font-weight: 500;
+  font-size: toRem(24);
+}
+h4 {
+  font-weight: 500;
+  font-size: toRem(18);
+}
+p {
+  line-height: 1.75;
+}
+
+input {
+  &::placeholder {
+    // color: $tertiary-text;
+  }
+}
+
+.btn {
+  background: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: toRem(24);
+  font-weight: 500;
+  color: $primary-text;
+}
+.action-btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid $primary-text;
+  border-radius: $border-radius;
+  transition: all 0.1s linear;
+
+  &:hover {
+    border: 2px solid $primary;
+    background: $primary;
+  }
+}
+
+.page {
+  width: 90%;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding-top: $page-top-padding;
+}

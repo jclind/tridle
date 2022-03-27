@@ -1,0 +1,54 @@
+@function toRem($value) {
+  $remValue: $value / 16 + rem;
+  @return $remValue;
+}
+
+$primary: #ff5722; // Also located in TrendingRecipes.js
+$secondary: #00adb5;
+
+$primary-background: #303841;
+$secondary-background: #595f66;
+$tertiary-background: #979ba0;
+
+$white: rgb(255, 255, 255);
+$gray-50: #fafafa;
+$gray-200: #eeeeee;
+$gray-300: #e6e6e6;
+$gray-400: #d6d6d6;
+$gray-500: #bebebe;
+$gray-600: #a6a6a6;
+
+$success-green: #28a745;
+$warning-yellow: #f0ad4e;
+$error-red: #dc3545;
+$error-red-hover: #b02a37;
+
+$alert-error-red: #f8d7da;
+$alert-error-red-border: #f5c6cb;
+$alert-error-red-text: #721c24;
+
+$alert-success-green: #d4edda;
+$alert-success-green-border: #c3e6cb;
+$alert-success-green-text: #155724;
+
+$primary-text: #eeeeee;
+$secondary-text: #d6d6d6;
+
+// Navbar
+$nav-height: toRem(100);
+
+$footer-height: toRem(150);
+$footer-margin: 4rem;
+
+$page-top-padding: calc(#{$nav-height} + 2rem);
+
+$recipe-page-max-width: 1000px;
+$recipe-body-max-width: 800px;
+
+$home-hero-height: calc(500px - #{$page-top-padding});
+
+$border-radius: 5px;
+
+$max-width: 1400px;
+
+$font-family: 'Montserrat', sans-serif;
