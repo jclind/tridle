@@ -1,0 +1,32 @@
+@import '../../../helpers.scss';
+
+.keyboard-container {
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0 auto;
+
+  .row {
+    display: flex;
+    gap: 0.25rem;
+    .key {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: toRem(24);
+      font-weight: 600;
+      min-width: 45px;
+      height: 55px;
+      padding: 0 0.25rem;
+      background: $tertiary-background;
+      border-radius: 5px;
+      text-transform: capitalize;
+    }
+  }
+}

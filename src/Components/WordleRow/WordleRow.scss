@@ -13,6 +13,7 @@
     background: $tertiary-background;
     font-size: toRem(30);
     font-weight: 600;
+    border-radius: 5px;
   }
   .wordle-tile.eq {
     background: $success-green;

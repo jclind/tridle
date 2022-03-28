@@ -1,5 +1,36 @@
+@import '../../helpers.scss';
+
 .wordle {
   margin: 0 auto;
   width: fit-content;
   margin-top: 4rem;
+}
+.game-over-modal {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 400px;
+  padding: 1rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  color: $primary-text;
+  background: $primary-background;
+  text-align: center;
+
+  h2 {
+    padding-bottom: 2rem;
+  }
+  .close-modal-btn {
+    position: absolute;
+    right: 1rem;
+    outline: none;
+    background: none;
+    width: fit-content;
+  }
+  .completed-text {
+    padding-bottom: 2rem;
+  }
 }

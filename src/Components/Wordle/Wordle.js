@@ -1,15 +1,33 @@
 import React, { useState, useEffect } from 'react'
 import WordleRow from '../WordleRow/WordleRow'
+import KeyBoard from './KeyBoard/KeyBoard'
 import './Wordle.scss'
 import words from '../../assets/data/words'
+import { AiOutlineClose } from 'react-icons/ai'
+import Modal from 'react-modal'
+Modal.setAppElement('#root')
 
 const WORD = 'FLUFF'
 
 const Wordle = () => {
+  const [gameOver, setGameOver] = useState(false)
+  const [gameOverModal, setGameOverModal] = useState(gameOver)
+
+  useEffect(() => {
+    setGameOverModal(gameOver)
+  }, [gameOver])
+
   const [selectedRow, setSelectedRow] = useState(0)
   const [pastWords, setPastWords] = useState([])
   const [currWord, setCurrWord] = useState([])
   const [currWordValid, setCurrWordValid] = useState(true)
+
+  function openModal() {
+    setGameOverModal(true)
+  }
+  function closeModal() {
+    setGameOverModal(false)
+  }
 
   const enterWord = wordArr => {
     const letters = []
@@ -53,6 +71,13 @@ const Wordle = () => {
       }
     })
 
+    // Check if word is correct
+    const allLettersCorrect =
+      letters.filter(ltr => ltr.position !== 'eq').length === 0
+    if (allLettersCorrect) {
+      setGameOver(true)
+    }
+
     return letters
   }
 
@@ -63,38 +88,40 @@ const Wordle = () => {
       setCurrWordValid(true)
     }
     const f = e => {
-      if (
-        e.key.length === 1 &&
-        e.key.match(/^[a-zA-Z]*$/) &&
-        !e.altKey &&
-        !e.ctrlKey
-      ) {
-        if (currWord.length >= 5) {
-          return
+      if (!gameOver) {
+        if (
+          e.key.length === 1 &&
+          e.key.match(/^[a-zA-Z]*$/) &&
+          !e.altKey &&
+          !e.ctrlKey
+        ) {
+          if (currWord.length >= 5) {
+            return
+          }
+          setCurrWord(oldArray => [...oldArray, e.key.toUpperCase()])
         }
-        setCurrWord(oldArray => [...oldArray, e.key.toUpperCase()])
-      }
-      if (e.key === 'Backspace') {
-        const newArr = currWord.slice(0, currWord.length - 1)
-        setCurrWord([...newArr])
-      }
+        if (e.key === 'Backspace') {
+          const newArr = currWord.slice(0, currWord.length - 1)
+          setCurrWord([...newArr])
+        }
 
-      if (e.key === 'Enter') {
-        if (currWord.length !== 5) {
-          return
-        }
-        console.log(currWordValid)
-        if (currWordValid) {
-          console.log('bruh')
-          setPastWords(prevWords => [
-            ...prevWords,
-            { word: currWord.length, words: enterWord(currWord) },
-          ])
-          setCurrWord([])
-          setSelectedRow(selectedRow + 1)
-        } else {
-          console.log('among us')
-          setCurrWord([])
+        if (e.key === 'Enter') {
+          if (currWord.length !== 5) {
+            return
+          }
+          console.log(currWordValid)
+          if (currWordValid) {
+            console.log('bruh')
+            setPastWords(prevWords => [
+              ...prevWords,
+              { word: currWord.length, words: enterWord(currWord) },
+            ])
+            setCurrWord([])
+            setSelectedRow(selectedRow + 1)
+          } else {
+            console.log('among us')
+            setCurrWord([])
+          }
         }
       }
     }
@@ -117,7 +144,32 @@ const Wordle = () => {
     )
   }
 
-  return <div className='wordle'>{rows}</div>
+  return (
+    <>
+      <Modal
+        isOpen={gameOverModal}
+        onRequestClose={closeModal}
+        contentLabel='Example Modal'
+        className='game-over-modal'
+        style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          },
+        }}
+      >
+        <h2>Puzzle Solved!</h2>
+        <button className='close-modal-btn btn' onClick={closeModal}>
+          <AiOutlineClose />
+        </button>
+        <div className='completed-text'>
+          Congrats, you completed the wordle in {selectedRow} guess!
+          {selectedRow > 1 && 'es'}
+        </div>
+      </Modal>
+      <div className='wordle'>{rows}</div>
+      <KeyBoard pastWords={pastWords} />
+    </>
+  )
 }
 
 export default Wordle
