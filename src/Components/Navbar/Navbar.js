@@ -29,24 +29,24 @@ const Navbar = ({ isDark, setIsDark }) => {
       <nav className='nav'>
         <div className='nav-center'>
           <div className='nav-left'>
+            <ToggleTheme isDark={isDark} setIsDark={setIsDark} />
+            {/* <button
+              className='btn nav-btn support'
+              onClick={() => setSupportModalOpen(true)}
+            >
+              <AiOutlineHeart className='icon nav-icon' />
+            </button> */}
+          </div>
+          <div className='nav-middle'>
+            <h1 className='title'>WORDLE</h1>
+          </div>
+          <div className='nav-right'>
             <button
               className='btn nav-btn info'
               onClick={() => setInfoModalOpen(true)}
             >
               <AiOutlineInfoCircle className='icon nav-icon' />
             </button>
-            <button
-              className='btn nav-btn support'
-              onClick={() => setSupportModalOpen(true)}
-            >
-              <AiOutlineHeart className='icon nav-icon' />
-            </button>
-          </div>
-          <div className='nav-middle'>
-            <h1 className='title'>WORDLE</h1>
-          </div>
-          <div className='nav-right'>
-            <ToggleTheme isDark={isDark} setIsDark={setIsDark} />
             <button
               className='btn nav-btn settings'
               onClick={() => setOptionsModalOpen(true)}

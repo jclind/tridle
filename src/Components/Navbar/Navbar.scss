@@ -10,7 +10,7 @@ nav {
   .nav-center {
     position: relative;
     height: 100%;
-    width: 100%;
+    width: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,11 +22,6 @@ nav {
 
       display: flex;
       gap: 1rem;
-
-      .icon {
-        height: 25px;
-        width: 25px;
-      }
     }
     .nav-middle {
       flex: 1;
@@ -104,7 +99,14 @@ nav {
     transform: visibility 0s, opacity 1s;
   }
   .indicator-icon.toggle {
-    animation: show-icon 0.4s;
+    -webkit-animation-name: show_icon;
+    -moz-animation-name: show_icon;
+    -ms-animation-name: show_icon;
+    animation-name: show_icon;
+    -webkit-animation-duration: 0.4s;
+    -moz-animation-duration: 0.4s;
+    -ms-animation-duration: 0.4s;
+    animation-duration: 0.4s;
     // visibility: visible;
     opacity: 1;
   }
@@ -114,7 +116,7 @@ nav {
   }
 }
 
-@keyframes show-icon {
+@keyframes show_icon {
   0% {
     visibility: 1;
     opacity: 0;
@@ -134,6 +136,26 @@ nav {
     transform: rotate(0);
   }
 }
+@-webkit-keyframes show_icon {
+  0% {
+    -webkit-visibility: 1;
+    -webkit-opacity: 0;
+    -webkit-transform: translateX(4%);
+    -webkit-transform: rotate(15deg);
+  }
+  40% {
+    -webkit-opacity: 0.8;
+  }
+  50% {
+    -webkit-transform: translateX(2%);
+    -webkit-transform: rotate(-7deg);
+  }
+  100% {
+    -webkit-opacity: 1;
+    -webkit-transform: translateX(-2%);
+    -webkit-transform: rotate(0);
+  }
+}
 
 // Circle
 .circle-icon {
@@ -145,19 +167,74 @@ nav {
 .circle-icon.light {
   right: 0.35rem;
   transform: translateX(135%);
-  animation: move-circle-right 0.4s;
+  -webkit-animation-name: move_circle_right;
+  -moz-animation-name: move_circle_right;
+  -ms-animation-name: move_circle_right;
+  animation-name: move_circle_right;
+  -webkit-animation-duration: 0.4s;
+  -moz-animation-duration: 0.4s;
+  -ms-animation-duration: 0.4s;
+  animation-duration: 0.4s;
 }
 .circle-icon.dark {
   right: 0.35rem;
   transform: translateX(0%);
-  animation: move-circle-left 0.4s;
+  -webkit-animation-name: move_circle_left;
+  -moz-animation-name: move_circle_left;
+  -ms-animation-name: move_circle_left;
+  animation-name: move_circle_left;
+  -webkit-animation-duration: 0.4s;
+  -moz-animation-duration: 0.4s;
+  -ms-animation-duration: 0.4s;
+  animation-duration: 0.4s;
 }
-@keyframes move-circle-right {
-  /* You could think of as "step 1" */
+
+@-moz-keyframes move_circle_right {
+  0% {
+    -webkit-transform: translateX(0%);
+  }
+  50% {
+    -webkit-transform: translateX(145%);
+  }
+  70% {
+    -webkit-transform: translateX(135%);
+  }
+  100% {
+    -webkit-transform: translateX(130%);
+  }
+}
+@-webkit-keyframes move_circle_right {
+  0% {
+    -webkit-transform: translateX(0%);
+  }
+  50% {
+    -webkit-transform: translateX(145%);
+  }
+  70% {
+    -webkit-transform: translateX(135%);
+  }
+  100% {
+    -webkit-transform: translateX(130%);
+  }
+}
+@-o-keyframes move_circle_right {
+  0% {
+    -webkit-transform: translateX(0%);
+  }
+  50% {
+    -webkit-transform: translateX(145%);
+  }
+  70% {
+    -webkit-transform: translateX(135%);
+  }
+  100% {
+    -webkit-transform: translateX(130%);
+  }
+}
+@keyframes move_circle_right {
   0% {
     transform: translateX(0%);
   }
-  /* You could think of as "step 2" */
   50% {
     transform: translateX(145%);
   }
@@ -168,12 +245,10 @@ nav {
     transform: translateX(130%);
   }
 }
-@keyframes move-circle-left {
-  /* You could think of as "step 1" */
+@keyframes move_circle_left {
   0% {
     transform: translateX(150%);
   }
-  /* You could think of as "step 2" */
   50% {
     transform: translateX(-10%);
   }
@@ -182,5 +257,19 @@ nav {
   }
   100% {
     transform: translateX(0%);
+  }
+}
+@-webkit-keyframes move_circle_left {
+  0% {
+    -webkit-transform: translateX(150%);
+  }
+  50% {
+    -webkit-transform: translateX(-10%);
+  }
+  70% {
+    -webkit-transform: translateX(5%);
+  }
+  100% {
+    -webkit-transform: translateX(0%);
   }
 }
