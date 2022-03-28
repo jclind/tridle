@@ -10,30 +10,59 @@ Modal.setAppElement('#root')
 const WORD = 'AMONG'
 
 const Wordle = () => {
-  const [gameOver, setGameOver] = useState(false)
-  const [gameOverModal, setGameOverModal] = useState(gameOver)
+  const localCurrGameData = JSON.parse(localStorage.getItem('current-game'))
+  const [gameStatus, setGameStatus] = useState(() => {
+    if (localCurrGameData && localCurrGameData.gameStatus)
+      return localCurrGameData.gameStatus
+    return 'IN_PROGRESS'
+  })
+  const [gameOverModal, setGameOverModal] = useState(false)
 
-  useEffect(() => {
-    setGameOverModal(gameOver)
-  }, [gameOver])
-
-  const [selectedRow, setSelectedRow] = useState(0)
-  const [pastWords, setPastWords] = useState([])
+  const [selectedRow, setSelectedRow] = useState(() => {
+    if (localCurrGameData && localCurrGameData.selectedRow)
+      return localCurrGameData.selectedRow
+    return 0
+  })
+  const [pastWords, setPastWords] = useState(() => {
+    if (localCurrGameData && localCurrGameData.pastWords)
+      return localCurrGameData.pastWords
+    return []
+  })
   const [currWord, setCurrWord] = useState([])
   const [currWordValid, setCurrWordValid] = useState(true)
 
-  function openModal() {
-    setGameOverModal(true)
+  const setLocalStorage = () => {
+    console.log('saving data')
+    const data = {
+      gameStatus,
+      selectedRow,
+      pastWords,
+      solution: WORD,
+    }
+    localStorage.setItem('current-game', JSON.stringify(data))
   }
+
+  useEffect(() => {
+    setLocalStorage()
+  }, [pastWords])
+
+  // Modal functions
+  useEffect(() => {
+    if (gameStatus) {
+      if (gameStatus === 'WON' || gameStatus === 'LOST') {
+        return setGameOverModal(true)
+      }
+      setGameOverModal(false)
+    }
+  }, [gameStatus])
   function closeModal() {
     setGameOverModal(false)
   }
 
   const addLetterToCurrWord = key => {
-    if (currWord.length >= 5 || gameOver) {
+    if (currWord.length >= 5 || gameStatus === 'WON' || gameStatus === 'LOST') {
       return
     }
-    console.log(key)
     return setCurrWord(oldArray => [...oldArray, key.toUpperCase()])
   }
   const deleteLetter = () => {
@@ -69,15 +98,6 @@ const Wordle = () => {
         } else {
           letters.push({ letter: ltr, position: 'nin' })
         }
-        // modWord.replace(exp, '').length
-        // console.log(modWord.replace(exp, ''), exp)
-        console.log(
-          numCurrLtrInWord,
-          numCurrLtrInCurrWord,
-          numCorrectInWord,
-          splitCurrWord
-        )
-        // IF LETTER COMES BEFORE LETTER IN POSITION
       } else {
         letters.push({ letter: ltr, position: 'nin' })
       }
@@ -87,26 +107,24 @@ const Wordle = () => {
     const allLettersCorrect =
       letters.filter(ltr => ltr.position !== 'eq').length === 0
     if (allLettersCorrect) {
-      setGameOver(true)
+      setGameStatus('WON')
+    } else if (selectedRow > 4) {
+      setGameStatus('LOST')
     }
-
     return letters
   }
   const submitWord = () => {
     if (currWord.length !== 5) {
       return
     }
-    console.log(currWordValid)
     if (currWordValid) {
-      console.log('bruh')
+      setSelectedRow(selectedRow + 1)
       setPastWords(prevWords => [
         ...prevWords,
         { word: currWord.length, words: enterWord(currWord) },
       ])
       setCurrWord([])
-      setSelectedRow(selectedRow + 1)
     } else {
-      console.log('among us')
       setCurrWord([])
     }
   }
@@ -118,7 +136,7 @@ const Wordle = () => {
       setCurrWordValid(true)
     }
     const f = e => {
-      if (!gameOver) {
+      if (gameStatus === 'IN_PROGRESS') {
         if (
           e.key.length === 1 &&
           e.key.match(/^[a-zA-Z]*$/) &&
@@ -171,14 +189,28 @@ const Wordle = () => {
           },
         }}
       >
-        <h2>Puzzle Solved!</h2>
-        <button className='close-modal-btn btn' onClick={closeModal}>
-          <AiOutlineClose />
-        </button>
-        <div className='completed-text'>
-          Congrats, you completed the wordle in {selectedRow} guess!
-          {selectedRow > 1 && 'es'}
-        </div>
+        {gameStatus === 'WON' ? (
+          <>
+            <h2>Puzzle Solved!</h2>
+            <button className='close-modal-btn btn' onClick={closeModal}>
+              <AiOutlineClose />
+            </button>
+            <div className='completed-text'>
+              Congrats, you completed the wordle in {selectedRow} guess
+              {selectedRow > 1 && 'es'}!
+            </div>
+          </>
+        ) : (
+          <>
+            <h2>You'll get 'em next time!</h2>
+            <button className='close-modal-btn btn' onClick={closeModal}>
+              <AiOutlineClose />
+            </button>
+            <div className='completed-text'>
+              The word was <span className='word'>{WORD}</span>.
+            </div>
+          </>
+        )}
       </Modal>
       <div className='wordle'>{rows}</div>
       <KeyBoard

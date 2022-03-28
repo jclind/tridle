@@ -32,5 +32,11 @@
   }
   .completed-text {
     padding-bottom: 2rem;
+    .word {
+      background: $secondary-background;
+      padding: 0.25rem;
+      font-weight: 600;
+      border-radius: 5px;
+    }
   }
 }

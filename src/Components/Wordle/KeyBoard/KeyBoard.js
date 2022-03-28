@@ -7,11 +7,9 @@ const KeyBoard = ({ pastWords, addLetter, deleteLetter, submitWord }) => {
   const letters = {}
   pastWords.forEach(el => {
     el.words.forEach(word => {
-      console.log(letters, word.letter, letters[word.letter])
       if (letters && letters[word.letter] === 'eq') {
         return
       }
-      console.log(word.letter)
       letters[word.letter] = word.position
     })
   })
