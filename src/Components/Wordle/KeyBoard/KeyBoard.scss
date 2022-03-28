@@ -28,5 +28,14 @@
       border-radius: 5px;
       text-transform: capitalize;
     }
+    .key.eq {
+      background: $success-green;
+    }
+    .key.in {
+      background: $warning-yellow;
+    }
+    .key.nin {
+      background: $secondary-background;
+    }
   }
 }

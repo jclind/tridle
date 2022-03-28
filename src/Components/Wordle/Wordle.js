@@ -7,7 +7,7 @@ import { AiOutlineClose } from 'react-icons/ai'
 import Modal from 'react-modal'
 Modal.setAppElement('#root')
 
-const WORD = 'FLUFF'
+const WORD = 'AMONG'
 
 const Wordle = () => {
   const [gameOver, setGameOver] = useState(false)
