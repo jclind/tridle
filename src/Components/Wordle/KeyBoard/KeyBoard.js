@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import './KeyBoard.scss'
 import { FiDelete } from 'react-icons/fi'
+import { BsArrowReturnLeft } from 'react-icons/bs'
 
-const KeyBoard = ({ pastWords }) => {
+const KeyBoard = ({ pastWords, addLetter, deleteLetter }) => {
   const letters = {}
   pastWords.forEach(el => {
     el.words.forEach(word => {
@@ -14,44 +15,175 @@ const KeyBoard = ({ pastWords }) => {
       letters[word.letter] = word.position
     })
   })
-  console.log(letters)
   return (
     <div className='keyboard-container'>
       <div className='row row-1'>
-        <div className={`key ${letters.Q}`}>q</div>
-        <div className={`key ${letters.W}`}>w</div>
-        <div className={`key ${letters.E}`}>e</div>
-        <div className={`key ${letters.R}`}>r</div>
-        <div className={`key ${letters.T}`}>t</div>
-        <div className={`key ${letters.Y}`}>y</div>
-        <div className={`key ${letters.U}`}>u</div>
-        <div className={`key ${letters.I}`}>i</div>
-        <div className={`key ${letters.O}`}>o</div>
-        <div className={`key ${letters.P}`}>p</div>
+        <button
+          className={`key btn ${letters.Q}`}
+          onClick={() => addLetter('Q')}
+        >
+          q
+        </button>
+        <button
+          className={`key btn ${letters.W}`}
+          onClick={() => addLetter('W')}
+        >
+          w
+        </button>
+        <button
+          className={`key btn ${letters.E}`}
+          onClick={() => addLetter('E')}
+        >
+          e
+        </button>
+        <button
+          className={`key btn ${letters.R}`}
+          onClick={() => addLetter('R')}
+        >
+          r
+        </button>
+        <button
+          className={`key btn ${letters.T}`}
+          onClick={() => addLetter('T')}
+        >
+          t
+        </button>
+        <button
+          className={`key btn ${letters.Y}`}
+          onClick={() => addLetter('Y')}
+        >
+          y
+        </button>
+        <button
+          className={`key btn ${letters.U}`}
+          onClick={() => addLetter('U')}
+        >
+          u
+        </button>
+        <button
+          className={`key btn ${letters.I}`}
+          onClick={() => addLetter('I')}
+        >
+          i
+        </button>
+        <button
+          className={`key btn ${letters.O}`}
+          onClick={() => addLetter('O')}
+        >
+          o
+        </button>
+        <button
+          className={`key btn ${letters.P}`}
+          onClick={() => addLetter('P')}
+        >
+          p
+        </button>
       </div>
       <div className='row row-2'>
-        <div className={`key ${letters.A}`}>a</div>
-        <div className={`key ${letters.S}`}>s</div>
-        <div className={`key ${letters.D}`}>d</div>
-        <div className={`key ${letters.F}`}>f</div>
-        <div className={`key ${letters.G}`}>g</div>
-        <div className={`key ${letters.H}`}>h</div>
-        <div className={`key ${letters.J}`}>j</div>
-        <div className={`key ${letters.K}`}>k</div>
-        <div className={`key ${letters.L}`}>l</div>
+        <button
+          className={`key btn ${letters.A}`}
+          onClick={() => addLetter('A')}
+        >
+          a
+        </button>
+        <button
+          className={`key btn ${letters.S}`}
+          onClick={() => addLetter('S')}
+        >
+          s
+        </button>
+        <button
+          className={`key btn ${letters.D}`}
+          onClick={() => addLetter('D')}
+        >
+          d
+        </button>
+        <button
+          className={`key btn ${letters.F}`}
+          onClick={() => addLetter('F')}
+        >
+          f
+        </button>
+        <button
+          className={`key btn ${letters.G}`}
+          onClick={() => addLetter('G')}
+        >
+          g
+        </button>
+        <button
+          className={`key btn ${letters.H}`}
+          onClick={() => addLetter('H')}
+        >
+          h
+        </button>
+        <button
+          className={`key btn ${letters.J}`}
+          onClick={() => addLetter('J')}
+        >
+          j
+        </button>
+        <button
+          className={`key btn ${letters.K}`}
+          onClick={() => addLetter('K')}
+        >
+          k
+        </button>
+        <button
+          className={`key btn ${letters.L}`}
+          onClick={() => addLetter('L')}
+        >
+          l
+        </button>
       </div>
       <div className='row row-3'>
-        <div className='key enter'>ENTER</div>
-        <div className={`key ${letters.Z}`}>z</div>
-        <div className={`key ${letters.X}`}>x</div>
-        <div className={`key ${letters.C}`}>c</div>
-        <div className={`key ${letters.V}`}>v</div>
-        <div className={`key ${letters.B}`}>b</div>
-        <div className={`key ${letters.N}`}>n</div>
-        <div className={`key ${letters.M}`}>m</div>
-        <div className='key'>
-          <FiDelete />
-        </div>
+        <button className='key btn enter'>
+          <BsArrowReturnLeft className='icon' />
+        </button>
+        <button
+          className={`key btn ${letters.Z}`}
+          onClick={() => addLetter('Z')}
+        >
+          z
+        </button>
+        <button
+          className={`key btn ${letters.X}`}
+          onClick={() => addLetter('X')}
+        >
+          x
+        </button>
+        <button
+          className={`key btn ${letters.C}`}
+          onClick={() => addLetter('C')}
+        >
+          c
+        </button>
+        <button
+          className={`key btn ${letters.V}`}
+          onClick={() => addLetter('V')}
+        >
+          v
+        </button>
+        <button
+          className={`key btn ${letters.B}`}
+          onClick={() => addLetter('B')}
+        >
+          b
+        </button>
+        <button
+          className={`key btn ${letters.N}`}
+          onClick={() => addLetter('N')}
+        >
+          n
+        </button>
+        <button
+          className={`key btn ${letters.M}`}
+          onClick={() => addLetter('M')}
+        >
+          m
+        </button>
+        <button className='key delete btn' onClick={deleteLetter}>
+          <FiDelete className='icon' />
+        </button>
       </div>
     </div>
   )

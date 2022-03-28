@@ -29,6 +29,18 @@ const Wordle = () => {
     setGameOverModal(false)
   }
 
+  const addLetterToCurrWord = key => {
+    if (currWord.length >= 5 || gameOver) {
+      return
+    }
+    console.log(key)
+    return setCurrWord(oldArray => [...oldArray, key.toUpperCase()])
+  }
+  const deleteLetter = () => {
+    const newArr = currWord.slice(0, currWord.length - 1)
+    setCurrWord([...newArr])
+  }
+
   const enterWord = wordArr => {
     const letters = []
 
@@ -80,6 +92,24 @@ const Wordle = () => {
 
     return letters
   }
+  const submitWord = () => {
+    if (currWord.length !== 5) {
+      return
+    }
+    console.log(currWordValid)
+    if (currWordValid) {
+      console.log('bruh')
+      setPastWords(prevWords => [
+        ...prevWords,
+        { word: currWord.length, words: enterWord(currWord) },
+      ])
+      setCurrWord([])
+      setSelectedRow(selectedRow + 1)
+    } else {
+      console.log('among us')
+      setCurrWord([])
+    }
+  }
 
   useEffect(() => {
     if (currWord.length === 5) {
@@ -98,30 +128,14 @@ const Wordle = () => {
           if (currWord.length >= 5) {
             return
           }
-          setCurrWord(oldArray => [...oldArray, e.key.toUpperCase()])
+          addLetterToCurrWord(e.key)
         }
         if (e.key === 'Backspace') {
-          const newArr = currWord.slice(0, currWord.length - 1)
-          setCurrWord([...newArr])
+          deleteLetter()
         }
 
         if (e.key === 'Enter') {
-          if (currWord.length !== 5) {
-            return
-          }
-          console.log(currWordValid)
-          if (currWordValid) {
-            console.log('bruh')
-            setPastWords(prevWords => [
-              ...prevWords,
-              { word: currWord.length, words: enterWord(currWord) },
-            ])
-            setCurrWord([])
-            setSelectedRow(selectedRow + 1)
-          } else {
-            console.log('among us')
-            setCurrWord([])
-          }
+          submitWord()
         }
       }
     }
@@ -167,7 +181,11 @@ const Wordle = () => {
         </div>
       </Modal>
       <div className='wordle'>{rows}</div>
-      <KeyBoard pastWords={pastWords} />
+      <KeyBoard
+        pastWords={pastWords}
+        addLetter={addLetterToCurrWord}
+        deleteLetter={deleteLetter}
+      />
     </>
   )
 }
