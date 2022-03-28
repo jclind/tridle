@@ -1,0 +1,186 @@
+@import '../../helpers.scss';
+@import '../../themes.scss';
+
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: $nav-height;
+  width: 100%;
+  .nav-center {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 700px;
+
+    .nav-left {
+      position: absolute;
+      left: 0;
+
+      display: flex;
+      gap: 1rem;
+
+      .icon {
+        height: 25px;
+        width: 25px;
+      }
+    }
+    .nav-middle {
+      flex: 1;
+      text-align: center;
+      h1 {
+        font-size: 26px;
+      }
+    }
+    .nav-right {
+      position: absolute;
+      right: 0;
+
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .settings-icon {
+        height: 25px;
+        width: 25px;
+      }
+    }
+
+    .nav-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .nav-btn.info {
+      &:hover {
+        color: #85c0f9 !important;
+      }
+    }
+    .nav-btn.support {
+      &:hover {
+        color: #bc1e1b !important;
+      }
+    }
+    .nav-btn.settings {
+      &:hover {
+        color: #28a745 !important;
+      }
+    }
+  }
+}
+
+.light-dark-toggle-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 58px;
+  height: 30px;
+  border-radius: 15px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+  border: 2px solid color(theme-toggle-border) !important;
+  background: color(theme-toggle-background) !important;
+
+  .icon {
+    height: 18px;
+    width: 18px;
+  }
+  .icon.light {
+    color: color(in-guess-color);
+  }
+
+  .indicator-icon {
+    height: 16px;
+    width: 16px;
+    position: absolute;
+    overflow: visible;
+    right: 0.45rem;
+    visibility: none;
+    opacity: 0;
+    stroke-width: 0.8;
+    transform: visibility 0s, opacity 1s;
+  }
+  .indicator-icon.toggle {
+    animation: show-icon 0.4s;
+    // visibility: visible;
+    opacity: 1;
+  }
+  .indicator-icon.light {
+    right: auto;
+    left: 0.45rem;
+  }
+}
+
+@keyframes show-icon {
+  0% {
+    visibility: 1;
+    opacity: 0;
+    transform: translateX(4%);
+    transform: rotate(15deg);
+  }
+  40% {
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateX(2%);
+    transform: rotate(-7deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-2%);
+    transform: rotate(0);
+  }
+}
+
+// Circle
+.circle-icon {
+  position: absolute;
+  overflow: visible;
+  left: 0.35rem;
+  stroke-width: 1.5;
+}
+.circle-icon.light {
+  right: 0.35rem;
+  transform: translateX(135%);
+  animation: move-circle-right 0.4s;
+}
+.circle-icon.dark {
+  right: 0.35rem;
+  transform: translateX(0%);
+  animation: move-circle-left 0.4s;
+}
+@keyframes move-circle-right {
+  /* You could think of as "step 1" */
+  0% {
+    transform: translateX(0%);
+  }
+  /* You could think of as "step 2" */
+  50% {
+    transform: translateX(145%);
+  }
+  70% {
+    transform: translateX(135%);
+  }
+  100% {
+    transform: translateX(130%);
+  }
+}
+@keyframes move-circle-left {
+  /* You could think of as "step 1" */
+  0% {
+    transform: translateX(150%);
+  }
+  /* You could think of as "step 2" */
+  50% {
+    transform: translateX(-10%);
+  }
+  70% {
+    transform: translateX(5%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
