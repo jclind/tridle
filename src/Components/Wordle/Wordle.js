@@ -185,6 +185,7 @@ const Wordle = () => {
         pastWords={pastWords}
         addLetter={addLetterToCurrWord}
         deleteLetter={deleteLetter}
+        submitWord={submitWord}
       />
     </>
   )

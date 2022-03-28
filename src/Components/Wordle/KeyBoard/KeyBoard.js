@@ -3,7 +3,7 @@ import './KeyBoard.scss'
 import { FiDelete } from 'react-icons/fi'
 import { BsArrowReturnLeft } from 'react-icons/bs'
 
-const KeyBoard = ({ pastWords, addLetter, deleteLetter }) => {
+const KeyBoard = ({ pastWords, addLetter, deleteLetter, submitWord }) => {
   const letters = {}
   pastWords.forEach(el => {
     el.words.forEach(word => {
@@ -136,7 +136,7 @@ const KeyBoard = ({ pastWords, addLetter, deleteLetter }) => {
         </button>
       </div>
       <div className='row row-3'>
-        <button className='key btn enter'>
+        <button className='key btn enter' onClick={submitWord}>
           <BsArrowReturnLeft className='icon' />
         </button>
         <button
