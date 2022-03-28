@@ -177,7 +177,7 @@ const Wordle = () => {
   }
 
   return (
-    <>
+    <div className='wordle-container'>
       <Modal
         isOpen={gameOverModal}
         onRequestClose={closeModal}
@@ -186,6 +186,20 @@ const Wordle = () => {
         style={{
           overlay: {
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          },
+          content: {
+            background: (() => {
+              if (document.querySelector('.app')) {
+                const style = getComputedStyle(document.querySelector('.app'))
+                return style.getPropertyValue('--primary-background')
+              }
+            })(),
+            color: (() => {
+              if (document.querySelector('.app')) {
+                const style = getComputedStyle(document.querySelector('.app'))
+                return style.getPropertyValue('--primary-text')
+              }
+            })(),
           },
         }}
       >
@@ -219,7 +233,7 @@ const Wordle = () => {
         deleteLetter={deleteLetter}
         submitWord={submitWord}
       />
-    </>
+    </div>
   )
 }
 

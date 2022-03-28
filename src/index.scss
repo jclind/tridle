@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap');
 @import './helpers.scss';
+@import './themes.scss';
 
 * {
   font-family: $font-family;
@@ -9,6 +10,7 @@
 }
 
 #root {
+  display: flex;
   // background: red;
   overflow: hidden;
 }
@@ -21,10 +23,18 @@ body {
   overflow-x: hidden;
 }
 body {
-  color: $primary-text;
   position: relative;
   width: 100%;
-  background: $primary-background;
+}
+#root {
+  height: 100%;
+  width: 100%;
+}
+.app {
+  height: 100%;
+  width: 100%;
+  color: color(primary-text);
+  background: color(primary-background);
 }
 
 h2 {
@@ -56,17 +66,17 @@ input {
   cursor: pointer;
   font-size: toRem(24);
   font-weight: 500;
-  color: $primary-text;
+  color: color(primary-text);
 }
 .action-btn {
   padding: 0.75rem 1.5rem;
-  border: 2px solid $primary-text;
+  border: 2px solid color(primary-text);
   border-radius: $border-radius;
   transition: all 0.1s linear;
 
   &:hover {
-    border: 2px solid $primary;
-    background: $primary;
+    border: 2px solid color(primary);
+    background: color(primary);
   }
 }
 

@@ -1,4 +1,5 @@
 @import '../../helpers.scss';
+@import '../../themes.scss';
 
 .wordle-row {
   display: flex;
@@ -10,21 +11,31 @@
     align-items: center;
     height: 60px;
     width: 60px;
-    background: $tertiary-background;
+    box-sizing: border-box;
+    border: 2px solid color(unfilled-tile-color);
+    color: color(primary-text);
     font-size: toRem(30);
     font-weight: 600;
-    border-radius: 5px;
+    border-radius: $border-radius;
+  }
+  .wordle-tile.eq,
+  .wordle-tile.in,
+  .wordle-tile.nin {
+    color: color(guessed-text-color);
   }
   .wordle-tile.eq {
-    background: $success-green;
+    background: color(correct-guess-color);
+    border-color: color(correct-guess-color);
   }
   .wordle-tile.in {
-    background: $warning-yellow;
+    background: color(in-guess-color);
+    border-color: color(in-guess-color);
   }
   .wordle-tile.nin {
-    background: $secondary-background;
+    background: color(not-in-guess);
+    border-color: color(not-in-guess);
   }
 }
-.wordle-row.invalid {
-  color: $error-red;
+.wordle-row.invalid .wordle-tile {
+  color: $error-red !important;
 }

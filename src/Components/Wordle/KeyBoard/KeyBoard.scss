@@ -1,4 +1,5 @@
 @import '../../../helpers.scss';
+@import '../../../themes.scss';
 
 .keyboard-container {
   position: absolute;
@@ -19,13 +20,13 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: toRem(24);
+      font-size: toRem(22);
       font-weight: 600;
       min-width: 50px;
       height: 55px;
       padding: 0 0.35rem;
-      background: $tertiary-background;
-      border-radius: 5px;
+      background: color(keyboard-color);
+      border-radius: $border-radius;
       text-transform: capitalize;
     }
     .key.enter {
@@ -48,14 +49,23 @@
         width: 22px;
       }
     }
+    .key.eq,
+    .key.in,
+    .key.nin {
+      color: color(guessed-text-color);
+    }
     .key.eq {
-      background: $success-green;
+      background: color(correct-guess-color);
+      border-color: color(success-green);
     }
     .key.in {
-      background: $warning-yellow;
+      background: color(in-guess-color);
+      border-color: color(warning-yellow);
     }
     .key.nin {
-      background: $secondary-background;
+      background: color(not-in-guess);
+      border-color: color(not-in-guess);
+      color: color(not-in-guess-text);
     }
   }
 

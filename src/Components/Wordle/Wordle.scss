@@ -1,23 +1,18 @@
 @import '../../helpers.scss';
+@import '../../themes.scss';
 
-.wordle {
-  margin: 0 auto;
-  width: fit-content;
-  margin-top: 4rem;
-}
 .game-over-modal {
   position: absolute;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
+  height: fit-content;
   max-width: 400px;
   padding: 1rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  color: $primary-text;
-  background: $primary-background;
   text-align: center;
 
   h2 {
@@ -32,11 +27,18 @@
   }
   .completed-text {
     padding-bottom: 2rem;
+    font-weight: 500;
     .word {
-      background: $secondary-background;
+      background: color(secondary-background);
       padding: 0.25rem;
-      font-weight: 600;
-      border-radius: 5px;
+      font-weight: 700;
+      border-radius: $border-radius;
     }
   }
+}
+
+.wordle {
+  margin: 0 auto;
+  width: fit-content;
+  margin-top: 4rem;
 }

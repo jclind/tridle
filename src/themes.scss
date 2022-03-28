@@ -1,0 +1,43 @@
+.app {
+  --primary-background: #eeeeee;
+  --secondary-background: #d6d6d6;
+  --tertiary-background: #a6a6a6;
+
+  --primary-text: #303841;
+  --secondary-text: #595f66;
+  --tertiary-text: #979ba0;
+
+  --unfilled-tile-color: #bebebe;
+  --correct-guess-color: #28a745;
+  --in-guess-color: #f0ad4e;
+  --not-in-guess-text: #eeeeee;
+  --not-in-guess: #777777;
+  --guessed-text-color: #eeeeee;
+  --keyboard-color: #bebebe;
+}
+.dark-theme {
+  --primary-background: #181c22;
+  --secondary-background: #1c2027;
+  --tertiary-background: #111418;
+
+  --primary-text: #eeeeee;
+  --secondary-text: #a6a6a6;
+  --tertiary-text: #777777;
+
+  --unfilled-tile-color: #4b4f55;
+  --correct-guess-color: #28a745;
+  --in-guess-color: #f0ad4e;
+  --not-in-guess: #2b303a;
+  --not-in-guess-text: #4e545e;
+  --guessed-text-color: #eeeeee;
+  --keyboard-color: #4b4f55;
+}
+
+.color-blind {
+  --correct-guess-color: #f5793a;
+  --in-guess-color: #85c0f9;
+}
+
+@function color($color-name) {
+  @return var(--#{$color-name});
+}
