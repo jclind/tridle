@@ -182,7 +182,7 @@ const Wordle = () => {
         isOpen={gameOverModal}
         onRequestClose={closeModal}
         contentLabel='Example Modal'
-        className='game-over-modal'
+        className='game-over-modal modal'
         style={{
           overlay: {
             backgroundColor: 'rgba(0, 0, 0, 0.5)',

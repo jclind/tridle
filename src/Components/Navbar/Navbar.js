@@ -7,11 +7,12 @@ import {
   AiOutlineSetting,
   AiOutlineClose,
 } from 'react-icons/ai'
+import SettingsModal from './SettingsModal/SettingsModal'
 
 import Modal from 'react-modal'
 Modal.setAppElement('#root')
 
-const Navbar = ({ isDark, setIsDark }) => {
+const Navbar = ({ isDark, setIsDark, isColorBlind, setIsColorBlind }) => {
   const [infoModalOpen, setInfoModalOpen] = useState(false)
   const closeInfoModal = () => {
     setInfoModalOpen(false)
@@ -21,9 +22,7 @@ const Navbar = ({ isDark, setIsDark }) => {
     setSupportModalOpen(false)
   }
   const [optionsModalOpen, setOptionsModalOpen] = useState(false)
-  const closeOptionsModal = () => {
-    setOptionsModalOpen(false)
-  }
+
   return (
     <>
       <nav className='nav'>
@@ -60,7 +59,7 @@ const Navbar = ({ isDark, setIsDark }) => {
         isOpen={infoModalOpen}
         onRequestClose={closeInfoModal}
         contentLabel='Example Modal'
-        className='game-over-modal modal'
+        className='info-modal modal'
         style={{
           overlay: {
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -93,7 +92,7 @@ const Navbar = ({ isDark, setIsDark }) => {
         isOpen={supportModalOpen}
         onRequestClose={closeSupportModal}
         contentLabel='Example Modal'
-        className='game-over-modal modal'
+        className='support-modal modal'
         style={{
           overlay: {
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -122,39 +121,12 @@ const Navbar = ({ isDark, setIsDark }) => {
           <div className='completed-text'>More content</div>
         </>
       </Modal>
-      <Modal
-        isOpen={optionsModalOpen}
-        onRequestClose={closeOptionsModal}
-        contentLabel='Example Modal'
-        className='game-over-modal modal'
-        style={{
-          overlay: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          },
-          content: {
-            background: (() => {
-              if (document.querySelector('.app')) {
-                const style = getComputedStyle(document.querySelector('.app'))
-                return style.getPropertyValue('--primary-background')
-              }
-            })(),
-            color: (() => {
-              if (document.querySelector('.app')) {
-                const style = getComputedStyle(document.querySelector('.app'))
-                return style.getPropertyValue('--primary-text')
-              }
-            })(),
-          },
-        }}
-      >
-        <>
-          <h2>Content will go here</h2>
-          <button className='close-modal-btn btn' onClick={closeOptionsModal}>
-            <AiOutlineClose />
-          </button>
-          <div className='completed-text'>More content</div>
-        </>
-      </Modal>
+      <SettingsModal
+        optionsModalOpen={optionsModalOpen}
+        setOptionsModalOpen={setOptionsModalOpen}
+        isColorBlind={isColorBlind}
+        setIsColorBlind={setIsColorBlind}
+      />
     </>
   )
 }
