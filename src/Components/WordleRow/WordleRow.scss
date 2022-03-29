@@ -17,6 +17,14 @@
     font-size: toRem(30);
     font-weight: 600;
     border-radius: $border-radius;
+    @media screen and (max-width: 500px) {
+      height: 55px;
+      width: 55px;
+    }
+    @media screen and (max-width: 375px) {
+      height: 50px;
+      width: 50px;
+    }
   }
   .wordle-tile.eq,
   .wordle-tile.in,

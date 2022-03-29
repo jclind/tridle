@@ -41,4 +41,11 @@
   margin: 0 auto;
   width: fit-content;
   margin-top: 4rem;
+
+  max-height: calc(100vh - #{$nav-height} - #{$keyboard-height});
+  overflow-y: scroll;
+
+  @media screen and (max-width: 500px) {
+    margin-top: 0;
+  }
 }
