@@ -4,7 +4,6 @@ import Navbar from './Components/Navbar/Navbar'
 
 function App() {
   const localSettings = JSON.parse(localStorage.getItem('settings'))
-  console.log(localSettings)
   const [isDark, setIsDark] = useState(() => {
     if (localSettings) {
       console.log('here?', localSettings.isDark)

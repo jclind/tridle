@@ -9,9 +9,15 @@ const WordleTile = ({ letter, position }) => {
   )
 }
 
-const WordleRow = ({ isSelected, currWord, pastWord, currWordValid }) => {
+const WordleRow = ({
+  isSelected,
+  currWord,
+  pastWord,
+  currWordValid,
+  LTRS_IN_WORD,
+}) => {
   const letters = []
-  for (let i = 0; i <= 2; i++) {
+  for (let i = 0; i <= LTRS_IN_WORD - 1; i++) {
     let currLetter = ''
     let currWordPosition = ''
     if (isSelected && currWord[i]) {
@@ -32,7 +38,7 @@ const WordleRow = ({ isSelected, currWord, pastWord, currWordValid }) => {
   return (
     <div
       className={
-        !currWordValid && isSelected && currWord.length === 3
+        !currWordValid && isSelected && currWord.length === LTRS_IN_WORD
           ? 'wordle-row invalid'
           : 'wordle-row'
       }

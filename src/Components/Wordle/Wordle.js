@@ -16,15 +16,14 @@ const diffDays = (date1, date2) => {
   return Math.round(Math.abs((date1 - date2) / oneDay)) - 1
 }
 
+const NUM_GUESSES = 8
+const LTRS_IN_WORD = 3
+
 const Wordle = () => {
   const getAnswer = () => {
-    const answersLength = answers.length
     const numDays = diffDays(startDate, new Date())
-    console.log(answersLength)
-    console.log(numDays)
-
-    console.log(answers[numDays])
-    return answers[numDays]
+    const word = answers[numDays]
+    return word.toUpperCase()
   }
   const [answer, setAnswer] = useState(getAnswer)
   useEffect(() => {
@@ -99,7 +98,11 @@ const Wordle = () => {
   }
 
   const addLetterToCurrWord = key => {
-    if (currWord.length >= 3 || gameStatus === 'WON' || gameStatus === 'LOST') {
+    if (
+      currWord.length >= LTRS_IN_WORD ||
+      gameStatus === 'WON' ||
+      gameStatus === 'LOST'
+    ) {
       return
     }
     return setCurrWord(oldArray => [...oldArray, key.toUpperCase()])
@@ -110,8 +113,8 @@ const Wordle = () => {
   }
 
   const enterWord = wordArr => {
+    console.log(wordArr)
     const letters = []
-
     wordArr.map((ltr, idx) => {
       if (answer.split('')[idx] === wordArr[idx]) {
         letters.push({ letter: ltr, position: 'eq' })
@@ -147,13 +150,13 @@ const Wordle = () => {
       letters.filter(ltr => ltr.position !== 'eq').length === 0
     if (allLettersCorrect) {
       setGameStatus('WON')
-    } else if (selectedRow > 4) {
+    } else if (selectedRow >= NUM_GUESSES - 1) {
       setGameStatus('LOST')
     }
     return letters
   }
   const submitWord = () => {
-    if (currWord.length !== 3) {
+    if (currWord.length !== LTRS_IN_WORD) {
       return
     }
     if (currWordValid) {
@@ -169,7 +172,7 @@ const Wordle = () => {
   }
 
   useEffect(() => {
-    if (currWord.length === 3) {
+    if (currWord.length === LTRS_IN_WORD) {
       setCurrWordValid(
         threeLetterWords.indexOf(currWord.join('').toLowerCase()) !== -1
       )
@@ -184,7 +187,7 @@ const Wordle = () => {
           !e.altKey &&
           !e.ctrlKey
         ) {
-          if (currWord.length >= 3) {
+          if (currWord.length >= LTRS_IN_WORD) {
             return
           }
           addLetterToCurrWord(e.key)
@@ -205,7 +208,7 @@ const Wordle = () => {
   }, [currWord, currWordValid])
 
   const rows = []
-  for (let i = 0; i <= 5; i++) {
+  for (let i = 0; i < NUM_GUESSES; i++) {
     rows.push(
       <WordleRow
         key={i}
@@ -213,6 +216,7 @@ const Wordle = () => {
         currWord={currWord}
         pastWord={pastWords[i]}
         currWordValid={currWordValid}
+        LTRS_IN_WORD={LTRS_IN_WORD}
       />
     )
   }
@@ -267,7 +271,9 @@ const Wordle = () => {
           </>
         )}
       </Modal>
-      <div className='wordle'>{rows}</div>
+      <div className='puzzle-container'>
+        <div className='wordle'>{rows}</div>
+      </div>
       <KeyBoard
         pastWords={pastWords}
         addLetter={addLetterToCurrWord}
