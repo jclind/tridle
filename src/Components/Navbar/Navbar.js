@@ -3,7 +3,6 @@ import ToggleTheme from './ToggleTheme'
 import './Navbar.scss'
 import {
   AiOutlineInfoCircle,
-  AiOutlineHeart,
   AiOutlineSetting,
   AiOutlineClose,
 } from 'react-icons/ai'
@@ -29,15 +28,9 @@ const Navbar = ({ isDark, setIsDark, isColorBlind, setIsColorBlind }) => {
         <div className='nav-center'>
           <div className='nav-left'>
             <ToggleTheme isDark={isDark} setIsDark={setIsDark} />
-            {/* <button
-              className='btn nav-btn support'
-              onClick={() => setSupportModalOpen(true)}
-            >
-              <AiOutlineHeart className='icon nav-icon' />
-            </button> */}
           </div>
           <div className='nav-middle'>
-            <h1 className='title'>WORDLE</h1>
+            <h1 className='title'>TRIDLE</h1>
           </div>
           <div className='nav-right'>
             <button
