@@ -2,15 +2,51 @@ import React, { useState, useEffect } from 'react'
 import WordleRow from '../WordleRow/WordleRow'
 import KeyBoard from './KeyBoard/KeyBoard'
 import './Wordle.scss'
-import words from '../../assets/data/words'
+import { threeLetterWords, answers } from '../../assets/data/threeLetterWords'
 import { AiOutlineClose } from 'react-icons/ai'
+import { scheduleJob } from 'node-schedule'
 import Modal from 'react-modal'
 Modal.setAppElement('#root')
 
-const WORD = 'AMONG'
+const startDate = new Date(
+  'Wed Mar 30 2022 00:00:00 GMT-0400 (Eastern Daylight Time)'
+)
+const diffDays = (date1, date2) => {
+  const oneDay = 24 * 60 * 60 * 1000
+  return Math.round(Math.abs((date1 - date2) / oneDay)) - 1
+}
 
 const Wordle = () => {
-  const localCurrGameData = JSON.parse(localStorage.getItem('current-game'))
+  const getAnswer = () => {
+    const answersLength = answers.length
+    const numDays = diffDays(startDate, new Date())
+    console.log(answersLength)
+    console.log(numDays)
+
+    console.log(answers[numDays])
+    return answers[numDays]
+  }
+  const [answer, setAnswer] = useState(getAnswer)
+  useEffect(() => {
+    setLocalStorage()
+  }, [answer])
+
+  useEffect(() => {
+    scheduleJob('45 31 13 * * *', () => {
+      setAnswer(getAnswer)
+    })
+  }, [])
+
+  let localCurrGameData = JSON.parse(localStorage.getItem('current-game'))
+  if (
+    localCurrGameData &&
+    localCurrGameData.expirationTime &&
+    localCurrGameData.expirationTime < new Date().getTime()
+  ) {
+    localStorage.removeItem('current-game')
+    localCurrGameData = null
+  }
+
   const [gameStatus, setGameStatus] = useState(() => {
     if (localCurrGameData && localCurrGameData.gameStatus)
       return localCurrGameData.gameStatus
@@ -30,14 +66,17 @@ const Wordle = () => {
   })
   const [currWord, setCurrWord] = useState([])
   const [currWordValid, setCurrWordValid] = useState(true)
-
   const setLocalStorage = () => {
     console.log('saving data')
+    let expiration = new Date()
+    expiration = new Date(expiration.setUTCHours(23, 59, 59, 999)).getTime()
+
     const data = {
       gameStatus,
       selectedRow,
       pastWords,
-      solution: WORD,
+      solution: answer,
+      expirationTime: expiration,
     }
     localStorage.setItem('current-game', JSON.stringify(data))
   }
@@ -60,7 +99,7 @@ const Wordle = () => {
   }
 
   const addLetterToCurrWord = key => {
-    if (currWord.length >= 5 || gameStatus === 'WON' || gameStatus === 'LOST') {
+    if (currWord.length >= 3 || gameStatus === 'WON' || gameStatus === 'LOST') {
       return
     }
     return setCurrWord(oldArray => [...oldArray, key.toUpperCase()])
@@ -74,10 +113,10 @@ const Wordle = () => {
     const letters = []
 
     wordArr.map((ltr, idx) => {
-      if (WORD.split('')[idx] === wordArr[idx]) {
+      if (answer.split('')[idx] === wordArr[idx]) {
         letters.push({ letter: ltr, position: 'eq' })
-      } else if (WORD.includes(ltr)) {
-        let modWord = WORD
+      } else if (answer.includes(ltr)) {
+        let modWord = answer
         let splitCurrWord = currWord.join('').slice(0, idx)
 
         const numCurrLtrInWord = modWord.split(ltr).length - 1
@@ -85,7 +124,7 @@ const Wordle = () => {
 
         let numCorrectInWord = 0
         wordArr.map((currLtr, idx) => {
-          if (WORD.split('')[idx] === wordArr[idx] && wordArr[idx] === ltr) {
+          if (answer.split('')[idx] === wordArr[idx] && wordArr[idx] === ltr) {
             numCorrectInWord++
           }
         })
@@ -114,7 +153,7 @@ const Wordle = () => {
     return letters
   }
   const submitWord = () => {
-    if (currWord.length !== 5) {
+    if (currWord.length !== 3) {
       return
     }
     if (currWordValid) {
@@ -130,8 +169,10 @@ const Wordle = () => {
   }
 
   useEffect(() => {
-    if (currWord.length === 5) {
-      setCurrWordValid(words.indexOf(currWord.join('').toLowerCase()) !== -1)
+    if (currWord.length === 3) {
+      setCurrWordValid(
+        threeLetterWords.indexOf(currWord.join('').toLowerCase()) !== -1
+      )
     } else {
       setCurrWordValid(true)
     }
@@ -143,7 +184,7 @@ const Wordle = () => {
           !e.altKey &&
           !e.ctrlKey
         ) {
-          if (currWord.length >= 5) {
+          if (currWord.length >= 3) {
             return
           }
           addLetterToCurrWord(e.key)
@@ -221,7 +262,7 @@ const Wordle = () => {
               <AiOutlineClose />
             </button>
             <div className='completed-text'>
-              The word was <span className='word'>{WORD}</span>.
+              The word was <span className='word'>{answer}</span>.
             </div>
           </>
         )}

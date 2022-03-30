@@ -9,6 +9,7 @@
     "an-array-of-english-words": "^2.0.0",
     "fs": "^0.0.1-security",
     "node-sass": "^7.0.1",
+    "node-schedule": "^2.1.0",
     "normalize.css": "^8.0.1",
     "react": "^17.0.2",
     "react-alert": "^7.0.3",
