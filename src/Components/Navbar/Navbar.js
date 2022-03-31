@@ -7,15 +7,14 @@ import {
   AiOutlineClose,
 } from 'react-icons/ai'
 import SettingsModal from './SettingsModal/SettingsModal'
+import InfoModal from './InfoModal/InfoModal'
 
 import Modal from 'react-modal'
 Modal.setAppElement('#root')
 
 const Navbar = ({ isDark, setIsDark, isColorBlind, setIsColorBlind }) => {
   const [infoModalOpen, setInfoModalOpen] = useState(false)
-  const closeInfoModal = () => {
-    setInfoModalOpen(false)
-  }
+
   const [supportModalOpen, setSupportModalOpen] = useState(false)
   const closeSupportModal = () => {
     setSupportModalOpen(false)
@@ -24,7 +23,7 @@ const Navbar = ({ isDark, setIsDark, isColorBlind, setIsColorBlind }) => {
 
   return (
     <>
-      <nav className='nav'>
+      <nav className='nav' id='nav'>
         <div className='nav-center'>
           <div className='nav-left'>
             <ToggleTheme isDark={isDark} setIsDark={setIsDark} />
@@ -48,39 +47,10 @@ const Navbar = ({ isDark, setIsDark, isColorBlind, setIsColorBlind }) => {
           </div>
         </div>
       </nav>
-      <Modal
-        isOpen={infoModalOpen}
-        onRequestClose={closeInfoModal}
-        contentLabel='Example Modal'
-        className='info-modal modal'
-        style={{
-          overlay: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          },
-          content: {
-            background: (() => {
-              if (document.querySelector('.app')) {
-                const style = getComputedStyle(document.querySelector('.app'))
-                return style.getPropertyValue('--primary-background')
-              }
-            })(),
-            color: (() => {
-              if (document.querySelector('.app')) {
-                const style = getComputedStyle(document.querySelector('.app'))
-                return style.getPropertyValue('--primary-text')
-              }
-            })(),
-          },
-        }}
-      >
-        <>
-          <h2>Content will go here</h2>
-          <button className='close-modal-btn btn' onClick={closeInfoModal}>
-            <AiOutlineClose />
-          </button>
-          <div className='completed-text'>More content</div>
-        </>
-      </Modal>
+      <InfoModal
+        infoModalOpen={infoModalOpen}
+        setInfoModalOpen={setInfoModalOpen}
+      />
       <Modal
         isOpen={supportModalOpen}
         onRequestClose={closeSupportModal}

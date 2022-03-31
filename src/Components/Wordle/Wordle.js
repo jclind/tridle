@@ -28,6 +28,7 @@ const Wordle = () => {
   const [answer, setAnswer] = useState(getAnswer)
   useEffect(() => {
     setLocalStorage()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answer])
 
   useEffect(() => {
@@ -82,6 +83,7 @@ const Wordle = () => {
 
   useEffect(() => {
     setLocalStorage()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pastWords])
 
   // Modal functions
@@ -113,9 +115,8 @@ const Wordle = () => {
   }
 
   const enterWord = wordArr => {
-    console.log(wordArr)
     const letters = []
-    wordArr.map((ltr, idx) => {
+    wordArr.forEach((ltr, idx) => {
       if (answer.split('')[idx] === wordArr[idx]) {
         letters.push({ letter: ltr, position: 'eq' })
       } else if (answer.includes(ltr)) {
@@ -126,7 +127,7 @@ const Wordle = () => {
         const numCurrLtrInCurrWord = splitCurrWord.split(ltr).length - 1
 
         let numCorrectInWord = 0
-        wordArr.map((currLtr, idx) => {
+        wordArr.forEach((currLtr, idx) => {
           if (answer.split('')[idx] === wordArr[idx] && wordArr[idx] === ltr) {
             numCorrectInWord++
           }
@@ -205,6 +206,7 @@ const Wordle = () => {
     window.addEventListener('keydown', f)
 
     return () => window.removeEventListener('keydown', f)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currWord, currWordValid])
 
   const rows = []
