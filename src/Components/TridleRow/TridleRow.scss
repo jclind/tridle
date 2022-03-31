@@ -1,11 +1,11 @@
 @import '../../helpers.scss';
 @import '../../themes.scss';
 
-.wordle-row {
+.tridle-row {
   display: flex;
   gap: 0.25rem;
   margin-bottom: 0.25rem;
-  .wordle-tile {
+  .tridle-tile {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,24 +26,24 @@
       width: 40px;
     }
   }
-  .wordle-tile.eq,
-  .wordle-tile.in,
-  .wordle-tile.nin {
+  .tridle-tile.eq,
+  .tridle-tile.in,
+  .tridle-tile.nin {
     color: color(guessed-text-color);
   }
-  .wordle-tile.eq {
+  .tridle-tile.eq {
     background: color(correct-guess-color);
     border-color: color(correct-guess-color);
   }
-  .wordle-tile.in {
+  .tridle-tile.in {
     background: color(in-guess-color);
     border-color: color(in-guess-color);
   }
-  .wordle-tile.nin {
+  .tridle-tile.nin {
     background: color(not-in-guess);
     border-color: color(not-in-guess);
   }
 }
-.wordle-row.invalid .wordle-tile {
+.tridle-row.invalid .tridle-tile {
   color: $error-red !important;
 }
