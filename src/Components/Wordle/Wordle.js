@@ -2,40 +2,21 @@ import React, { useState, useEffect } from 'react'
 import WordleRow from '../WordleRow/WordleRow'
 import KeyBoard from './KeyBoard/KeyBoard'
 import './Wordle.scss'
-import { threeLetterWords, answers } from '../../assets/data/threeLetterWords'
+import { threeLetterWords } from '../../assets/data/threeLetterWords'
 import { AiOutlineClose } from 'react-icons/ai'
-import { scheduleJob } from 'node-schedule'
+import { useDailyAnswer } from '../../util/useDailyAnswer'
 import Modal from 'react-modal'
 Modal.setAppElement('#root')
-
-const startDate = new Date(
-  'Wed Mar 30 2022 00:00:00 GMT-0400 (Eastern Daylight Time)'
-)
-const diffDays = (date1, date2) => {
-  const oneDay = 24 * 60 * 60 * 1000
-  return Math.round(Math.abs((date1 - date2) / oneDay)) - 1
-}
 
 const NUM_GUESSES = 8
 const LTRS_IN_WORD = 3
 
 const Wordle = () => {
-  const getAnswer = () => {
-    const numDays = diffDays(startDate, new Date())
-    const word = answers[numDays]
-    return word.toUpperCase()
-  }
-  const [answer, setAnswer] = useState(getAnswer)
-  useEffect(() => {
-    setLocalStorage()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [answer])
+  const answer = useDailyAnswer()
 
   useEffect(() => {
-    scheduleJob('45 31 13 * * *', () => {
-      setAnswer(getAnswer)
-    })
-  }, [])
+    console.log(answer)
+  }, [answer])
 
   let localCurrGameData = JSON.parse(localStorage.getItem('current-game'))
   if (

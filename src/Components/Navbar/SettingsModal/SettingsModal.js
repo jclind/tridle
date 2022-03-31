@@ -20,7 +20,6 @@ const SettingsModal = ({
     if (document.querySelector('.app')) {
       const style = getComputedStyle(document.querySelector('.app'))
       const hex = style.getPropertyValue('--correct-guess-color')
-      console.log(hex)
       setOnColor(hex.trim())
     }
   }, [isColorBlind])
