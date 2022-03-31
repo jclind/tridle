@@ -18,7 +18,7 @@ export function useDailyAnswer() {
 
   useEffect(() => {
     // Update answer at the start of every day
-    scheduleJob('0 0 0 * * *', () => {
+    scheduleJob('0 0 * * *', () => {
       setAnswer(getAnswer)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
