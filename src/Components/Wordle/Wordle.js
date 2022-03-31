@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import WordleRow from '../WordleRow/WordleRow'
 import KeyBoard from './KeyBoard/KeyBoard'
+import EndGameModal from '../EndGameModal/EndGameModal'
 import './Wordle.scss'
 import { threeLetterWords } from '../../assets/data/threeLetterWords'
-import { AiOutlineClose } from 'react-icons/ai'
 import { useDailyAnswer } from '../../util/useDailyAnswer'
-import Modal from 'react-modal'
-Modal.setAppElement('#root')
 
 const NUM_GUESSES = 8
 const LTRS_IN_WORD = 3
 
 const Wordle = () => {
+  // Get daily answer
   const answer = useDailyAnswer()
 
-  useEffect(() => {
-    console.log(answer)
-  }, [answer])
-
   let localCurrGameData = JSON.parse(localStorage.getItem('current-game'))
+  // If the expiration time is passed, clear 'current-game' localStorage item
   if (
     localCurrGameData &&
     localCurrGameData.expirationTime &&
@@ -47,6 +43,7 @@ const Wordle = () => {
   })
   const [currWord, setCurrWord] = useState([])
   const [currWordValid, setCurrWordValid] = useState(true)
+
   const setLocalStorage = () => {
     let expiration = new Date()
     expiration = new Date(expiration.setUTCHours(23, 59, 59, 999)).getTime()
@@ -60,25 +57,11 @@ const Wordle = () => {
     }
     localStorage.setItem('current-game', JSON.stringify(data))
   }
-
+  // Set localStorage if pastWords or answer changes
   useEffect(() => {
     setLocalStorage()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pastWords])
-
-  // Modal functions
-  useEffect(() => {
-    if (gameStatus) {
-      if (gameStatus === 'WON' || gameStatus === 'LOST') {
-        return setGameOverModal(true)
-      }
-      setGameOverModal(false)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameStatus])
-  function closeModal() {
-    setGameOverModal(false)
-  }
+  }, [pastWords, answer])
 
   const addLetterToCurrWord = key => {
     if (
@@ -153,7 +136,9 @@ const Wordle = () => {
     }
   }
 
+  // Event Listeners
   useEffect(() => {
+    // If the currWord is LTRS_IN_WORD characters long, check it's validity as a word
     if (currWord.length === LTRS_IN_WORD) {
       setCurrWordValid(
         threeLetterWords.indexOf(currWord.join('').toLowerCase()) !== -1
@@ -161,8 +146,10 @@ const Wordle = () => {
     } else {
       setCurrWordValid(true)
     }
-    const f = e => {
+    // Call functions based on keyboard event listeners
+    const keyEvents = e => {
       if (gameStatus === 'IN_PROGRESS') {
+        // If a letter is typed, add that letter to the current word as long as the current word isn't max length
         if (
           e.key.length === 1 &&
           e.key.match(/^[a-zA-Z]*$/) &&
@@ -177,19 +164,48 @@ const Wordle = () => {
         if (e.key === 'Backspace') {
           deleteLetter()
         }
-
         if (e.key === 'Enter') {
           submitWord()
         }
       }
     }
 
-    window.addEventListener('keydown', f)
+    window.addEventListener('keydown', keyEvents)
 
-    return () => window.removeEventListener('keydown', f)
+    return () => window.removeEventListener('keydown', keyEvents)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currWord, currWordValid])
 
+  return (
+    <div className='wordle-container'>
+      <EndGameModal
+        gameOverModal={gameOverModal}
+        setGameOverModal={setGameOverModal}
+        gameStatus={gameStatus}
+        selectedRow={selectedRow}
+        answer={answer}
+      />
+      <div className='puzzle-container'>
+        <div className='wordle'>
+          <Rows
+            selectedRow={selectedRow}
+            currWord={currWord}
+            pastWords={pastWords}
+            currWordValid={currWordValid}
+          />
+        </div>
+      </div>
+      <KeyBoard
+        pastWords={pastWords}
+        addLetter={addLetterToCurrWord}
+        deleteLetter={deleteLetter}
+        submitWord={submitWord}
+      />
+    </div>
+  )
+}
+
+const Rows = ({ selectedRow, currWord, pastWords, currWordValid }) => {
   const rows = []
   for (let i = 0; i < NUM_GUESSES; i++) {
     rows.push(
@@ -203,68 +219,7 @@ const Wordle = () => {
       />
     )
   }
-
-  return (
-    <div className='wordle-container'>
-      <Modal
-        isOpen={gameOverModal}
-        onRequestClose={closeModal}
-        contentLabel='Example Modal'
-        className='game-over-modal modal'
-        style={{
-          overlay: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          },
-          content: {
-            background: (() => {
-              if (document.querySelector('.app')) {
-                const style = getComputedStyle(document.querySelector('.app'))
-                return style.getPropertyValue('--primary-background')
-              }
-            })(),
-            color: (() => {
-              if (document.querySelector('.app')) {
-                const style = getComputedStyle(document.querySelector('.app'))
-                return style.getPropertyValue('--primary-text')
-              }
-            })(),
-          },
-        }}
-      >
-        {gameStatus === 'WON' ? (
-          <>
-            <h2>Puzzle Solved!</h2>
-            <button className='close-modal-btn btn' onClick={closeModal}>
-              <AiOutlineClose />
-            </button>
-            <div className='completed-text'>
-              Congrats, you completed the wordle in {selectedRow} guess
-              {selectedRow > 1 && 'es'}!
-            </div>
-          </>
-        ) : (
-          <>
-            <h2>You'll get 'em next time!</h2>
-            <button className='close-modal-btn btn' onClick={closeModal}>
-              <AiOutlineClose />
-            </button>
-            <div className='completed-text'>
-              The word was <span className='word'>{answer}</span>.
-            </div>
-          </>
-        )}
-      </Modal>
-      <div className='puzzle-container'>
-        <div className='wordle'>{rows}</div>
-      </div>
-      <KeyBoard
-        pastWords={pastWords}
-        addLetter={addLetterToCurrWord}
-        deleteLetter={deleteLetter}
-        submitWord={submitWord}
-      />
-    </div>
-  )
+  return rows
 }
 
 export default Wordle
