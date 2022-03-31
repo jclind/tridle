@@ -15,15 +15,6 @@ const Tridle = () => {
   const answer = useDailyAnswer()
 
   let localCurrGameData = JSON.parse(localStorage.getItem('current-game'))
-  // If the expiration time is passed, clear 'current-game' localStorage item
-  if (
-    localCurrGameData &&
-    localCurrGameData.expirationTime &&
-    localCurrGameData.expirationTime < new Date().getTime()
-  ) {
-    localStorage.removeItem('current-game')
-    localCurrGameData = null
-  }
 
   const [gameStatus, setGameStatus] = useState(() => {
     if (localCurrGameData && localCurrGameData.gameStatus)
@@ -45,9 +36,22 @@ const Tridle = () => {
   const [currWord, setCurrWord] = useState([])
   const [currWordValid, setCurrWordValid] = useState(true)
 
+  const resetGame = () => {
+    setGameStatus('IN_PROGRESS')
+    setGameOverModal(false)
+    setSelectedRow(0)
+    setPastWords([])
+    setCurrWord([])
+  }
+
   // Set localStorage if pastWords or answer changes
   useEffect(() => {
-    setLocalStorage(gameStatus, selectedRow, pastWords, answer)
+    if (localCurrGameData && localCurrGameData.solution !== answer) {
+      setLocalStorage('IN_PROGRESS', 0, [], answer)
+      resetGame()
+    } else {
+      setLocalStorage(gameStatus, selectedRow, pastWords, answer)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pastWords, answer])
 
