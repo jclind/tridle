@@ -67,7 +67,6 @@ const Wordle = () => {
   const [currWord, setCurrWord] = useState([])
   const [currWordValid, setCurrWordValid] = useState(true)
   const setLocalStorage = () => {
-    console.log('saving data')
     let expiration = new Date()
     expiration = new Date(expiration.setUTCHours(23, 59, 59, 999)).getTime()
 

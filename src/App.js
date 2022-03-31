@@ -6,7 +6,6 @@ function App() {
   const localSettings = JSON.parse(localStorage.getItem('settings'))
   const [isDark, setIsDark] = useState(() => {
     if (localSettings) {
-      console.log('here?', localSettings.isDark)
       return localSettings.isDark
     }
     return true
@@ -20,11 +19,8 @@ function App() {
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem('settings'))
-    console.log(1)
     if (data) {
-      console.log(2)
       if (data.isDark !== isDark || data.isColorBlind !== isColorBlind) {
-        console.log(3, isDark, isColorBlind)
         const settingsData = {
           isDark,
           isColorBlind,
@@ -32,7 +28,6 @@ function App() {
         localStorage.setItem('settings', JSON.stringify(settingsData))
       }
     } else {
-      console.log(4)
       const settingsData = {
         isDark,
         isColorBlind,
