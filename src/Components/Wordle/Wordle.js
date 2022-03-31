@@ -76,30 +76,25 @@ const Wordle = () => {
         letters.push({ letter: ltr, position: 'eq' })
       } else if (answer.includes(ltr)) {
         let modWord = answer
-        let splitCurrWord = currWord.join('').slice(0, idx)
+        let splitCurrWord = currWord.join('').slice(0, idx) // get array of characters up to the current idx in forEach
 
-        const numCurrLtrInWord = modWord.split(ltr).length - 1
-        const numCurrLtrInCurrWord = splitCurrWord.split(ltr).length - 1
+        const numCurrLtrInAnswer = modWord.split(ltr).length - 1 // gets number of times the current letter is in the answer
+        const numCurrLtrInCurrWord = splitCurrWord.split(ltr).length - 1 // gets number of times the current letter is in the current word
 
-        let numCorrectInWord = 0
-        wordArr.forEach((currLtr, idx) => {
-          if (answer.split('')[idx] === wordArr[idx] && wordArr[idx] === ltr) {
-            numCorrectInWord++
+        let numCorrect = 0 // Holds amount of times the current letter is correctly placed the answer word
+        wordArr.forEach((currLtr, i) => {
+          // If the current letter matches the letter in the same index in answer, increment numCorrect
+          if (answer.split('')[i] === wordArr[i] && wordArr[i] === ltr) {
+            numCorrect++
           }
         })
 
-        console.log(
-          'numCurrLtrInAnswer:',
-          numCurrLtrInWord,
-          '\nnumCurrLtrInCurrWord:',
-          numCurrLtrInCurrWord,
-          '\nnumCorrectInWord:',
-          numCorrectInWord
-        )
-
+        // If the number of times the current letter is in the answer is greater than both the number of times the letter is correct in the current word,
+        // and the number of time the current letter is in the current word, the current letter is marked as 'in' the answer
+        // Simply, we are making sure the character isn't marked as 'in' the word too many times
         if (
-          numCurrLtrInWord > numCurrLtrInCurrWord &&
-          numCurrLtrInWord > numCorrectInWord
+          numCurrLtrInAnswer > numCurrLtrInCurrWord &&
+          numCurrLtrInAnswer > numCorrect
         ) {
           letters.push({ letter: ltr, position: 'in' })
         } else {
@@ -121,6 +116,7 @@ const Wordle = () => {
     return letters
   }
   const submitWord = () => {
+    // If the current word doesn't have the correct amount of characters, return
     if (currWord.length !== LTRS_IN_WORD) {
       return
     }
