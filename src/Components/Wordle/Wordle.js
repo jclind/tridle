@@ -94,6 +94,7 @@ const Wordle = () => {
       }
       setGameOverModal(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStatus])
   function closeModal() {
     setGameOverModal(false)
