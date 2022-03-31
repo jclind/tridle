@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import WordleRow from '../WordleRow/WordleRow'
 import KeyBoard from './KeyBoard/KeyBoard'
 import EndGameModal from '../EndGameModal/EndGameModal'
+import { setLocalStorage } from '../../util/setLocalStorage'
 import './Wordle.scss'
 import { threeLetterWords } from '../../assets/data/threeLetterWords'
 import { useDailyAnswer } from '../../util/useDailyAnswer'
@@ -44,26 +45,14 @@ const Wordle = () => {
   const [currWord, setCurrWord] = useState([])
   const [currWordValid, setCurrWordValid] = useState(true)
 
-  const setLocalStorage = () => {
-    let expiration = new Date()
-    expiration = new Date(expiration.setUTCHours(23, 59, 59, 999)).getTime()
-
-    const data = {
-      gameStatus,
-      selectedRow,
-      pastWords,
-      solution: answer,
-      expirationTime: expiration,
-    }
-    localStorage.setItem('current-game', JSON.stringify(data))
-  }
   // Set localStorage if pastWords or answer changes
   useEffect(() => {
-    setLocalStorage()
+    setLocalStorage(gameStatus, selectedRow, pastWords, answer)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pastWords, answer])
 
   const addLetterToCurrWord = key => {
+    // Don't allow input after game has finished
     if (
       currWord.length >= LTRS_IN_WORD ||
       gameStatus === 'WON' ||
@@ -71,6 +60,7 @@ const Wordle = () => {
     ) {
       return
     }
+    // Add typed key to currWord array
     return setCurrWord(oldArray => [...oldArray, key.toUpperCase()])
   }
   const deleteLetter = () => {
@@ -81,6 +71,7 @@ const Wordle = () => {
   const enterWord = wordArr => {
     const letters = []
     wordArr.forEach((ltr, idx) => {
+      // if the current word letter matches the equal indexed letter in answer, the letter is correct
       if (answer.split('')[idx] === wordArr[idx]) {
         letters.push({ letter: ltr, position: 'eq' })
       } else if (answer.includes(ltr)) {
@@ -97,8 +88,17 @@ const Wordle = () => {
           }
         })
 
+        console.log(
+          'numCurrLtrInAnswer:',
+          numCurrLtrInWord,
+          '\nnumCurrLtrInCurrWord:',
+          numCurrLtrInCurrWord,
+          '\nnumCorrectInWord:',
+          numCorrectInWord
+        )
+
         if (
-          numCurrLtrInWord >= numCurrLtrInCurrWord &&
+          numCurrLtrInWord > numCurrLtrInCurrWord &&
           numCurrLtrInWord > numCorrectInWord
         ) {
           letters.push({ letter: ltr, position: 'in' })
