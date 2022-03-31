@@ -14,13 +14,7 @@ const Tridle = () => {
   // Get daily answer
   const answer = useDailyAnswer()
 
-  // setTimeout(() => {
-  //   localStorage.removeItem('current-game')
-  //   forceUpdate()
-  // }, 3000)
-
   let localCurrGameData = JSON.parse(localStorage.getItem('current-game'))
-  // If the expiration time is passed, clear 'current-game' localStorage item
 
   const [gameStatus, setGameStatus] = useState(() => {
     if (localCurrGameData && localCurrGameData.gameStatus)
@@ -52,12 +46,7 @@ const Tridle = () => {
 
   // Set localStorage if pastWords or answer changes
   useEffect(() => {
-    if (
-      localCurrGameData &&
-      localCurrGameData.expirationTime &&
-      // localCurrGameData.expirationTime < new Date().getTime()
-      localCurrGameData.solution !== answer
-    ) {
+    if (localCurrGameData && localCurrGameData.solution !== answer) {
       setLocalStorage('IN_PROGRESS', 0, [], answer)
       resetGame()
     } else {
