@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Wordle from './Components/Wordle/Wordle'
+import Tridle from './Components/Tridle/Tridle'
 import Navbar from './Components/Navbar/Navbar'
 
 function App() {
@@ -51,7 +51,7 @@ function App() {
         isColorBlind={isColorBlind}
         setIsColorBlind={setIsColorBlind}
       />
-      <Wordle />
+      <Tridle />
     </div>
   )
 }

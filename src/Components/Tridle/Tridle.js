@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import WordleRow from '../WordleRow/WordleRow'
+import TridleRow from '../TridleRow/TridleRow'
 import KeyBoard from './KeyBoard/KeyBoard'
 import EndGameModal from '../EndGameModal/EndGameModal'
 import { setLocalStorage } from '../../util/setLocalStorage'
-import './Wordle.scss'
+import './Tridle.scss'
 import { threeLetterWords } from '../../assets/data/threeLetterWords'
 import { useDailyAnswer } from '../../util/useDailyAnswer'
 
 const NUM_GUESSES = 8
 const LTRS_IN_WORD = 3
 
-const Wordle = () => {
+const Tridle = () => {
   // Get daily answer
   const answer = useDailyAnswer()
 
@@ -173,7 +173,7 @@ const Wordle = () => {
   }, [currWord, currWordValid])
 
   return (
-    <div className='wordle-container'>
+    <div className='tridle-container'>
       <EndGameModal
         gameOverModal={gameOverModal}
         setGameOverModal={setGameOverModal}
@@ -182,7 +182,7 @@ const Wordle = () => {
         answer={answer}
       />
       <div className='puzzle-container'>
-        <div className='wordle'>
+        <div className='tridle'>
           <Rows
             selectedRow={selectedRow}
             currWord={currWord}
@@ -205,7 +205,7 @@ const Rows = ({ selectedRow, currWord, pastWords, currWordValid }) => {
   const rows = []
   for (let i = 0; i < NUM_GUESSES; i++) {
     rows.push(
-      <WordleRow
+      <TridleRow
         key={i}
         isSelected={selectedRow === i}
         currWord={currWord}
@@ -218,4 +218,4 @@ const Rows = ({ selectedRow, currWord, pastWords, currWordValid }) => {
   return rows
 }
 
-export default Wordle
+export default Tridle

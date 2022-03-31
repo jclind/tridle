@@ -1,15 +1,15 @@
 import React from 'react'
-import './WordleRow.scss'
+import './TridleRow.scss'
 
-const WordleTile = ({ letter, position }) => {
+const TridleTile = ({ letter, position }) => {
   return (
-    <div className={position ? `${position} wordle-tile` : `wordle-tile`}>
+    <div className={position ? `${position} tridle-tile` : `tridle-tile`}>
       {letter}
     </div>
   )
 }
 
-const WordleRow = ({
+const TridleRow = ({
   isSelected,
   currWord,
   pastWord,
@@ -29,7 +29,7 @@ const WordleRow = ({
       currWordPosition = pastWord.words[i].position
     }
     letters.push(
-      <WordleTile
+      <TridleTile
         key={i}
         letter={currLetter}
         position={currWordPosition}
@@ -42,8 +42,8 @@ const WordleRow = ({
       // If the current word is not valid, the current row is selected, and current word length is equal to LTRS_IN_WORD, turn text red
       className={
         !currWordValid && isSelected && currWord.length === LTRS_IN_WORD
-          ? 'wordle-row invalid'
-          : 'wordle-row'
+          ? 'tridle-row invalid'
+          : 'tridle-row'
       }
     >
       {letters}
@@ -51,4 +51,4 @@ const WordleRow = ({
   )
 }
 
-export default WordleRow
+export default TridleRow
