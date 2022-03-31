@@ -118,7 +118,7 @@ const InfoModal = ({ infoModalOpen, setInfoModalOpen }) => {
             }}
           >
             <BiGitBranch className='icon' />
-            v-1.0.0
+            v-1.0.1
           </div>
         </div>
       </div>
