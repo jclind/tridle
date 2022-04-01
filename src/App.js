@@ -3,10 +3,10 @@ import Tridle from './Components/Tridle/Tridle'
 import Navbar from './Components/Navbar/Navbar'
 import ReactGA from 'react-ga'
 const TRACKING_ID = 'G-XKBYT553LJ'
+ReactGA.initialize(TRACKING_ID)
 
 function App() {
   useEffect(() => {
-    ReactGA.initialize(TRACKING_ID)
     ReactGA.pageview('Init page view')
   }, [])
 
