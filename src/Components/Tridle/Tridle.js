@@ -22,12 +22,12 @@ const Tridle = ({ pageStats }) => {
     return 'IN_PROGRESS'
   })
   useEffect(() => {
-    // if (gameStatus === 'WON') {
-    //   pageStats.event({
-    //     category: 'User',
-    //     action: 'Game Finished',
-    //   })
-    // }
+    if (gameStatus === 'WON') {
+      pageStats.event({
+        category: 'User',
+        action: 'Game Finished',
+      })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStatus])
   const [gameOverModal, setGameOverModal] = useState(false)

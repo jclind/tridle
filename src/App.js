@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import Tridle from './Components/Tridle/Tridle'
 import Navbar from './Components/Navbar/Navbar'
 import ReactGA from 'react-ga'
-// const TRACKING_ID = 'G-XKBYT553LJ'
-// ReactGA.initialize(TRACKING_ID)
+const TRACKING_ID = 'G-XKBYT553LJ'
+ReactGA.initialize(TRACKING_ID)
 
 function App() {
-  // useEffect(() => {
-  //   ReactGA.pageview('Init page view')
-  // }, [])
+  useEffect(() => {
+    ReactGA.pageview('Init page view')
+  }, [])
 
   const localSettings = JSON.parse(localStorage.getItem('settings'))
   const [isDark, setIsDark] = useState(() => {
