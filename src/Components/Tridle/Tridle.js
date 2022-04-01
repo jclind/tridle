@@ -10,7 +10,7 @@ import { useDailyAnswer } from '../../util/useDailyAnswer'
 const NUM_GUESSES = 8
 const LTRS_IN_WORD = 3
 
-const Tridle = () => {
+const Tridle = ({ pageStats }) => {
   // Get daily answer
   const answer = useDailyAnswer()
 
@@ -21,6 +21,15 @@ const Tridle = () => {
       return localCurrGameData.gameStatus
     return 'IN_PROGRESS'
   })
+  useEffect(() => {
+    if (gameStatus === 'WON') {
+      pageStats.event({
+        category: 'User',
+        action: 'Game Finished',
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameStatus])
   const [gameOverModal, setGameOverModal] = useState(false)
 
   const [selectedRow, setSelectedRow] = useState(() => {

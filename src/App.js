@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Tridle from './Components/Tridle/Tridle'
 import Navbar from './Components/Navbar/Navbar'
 
-function App() {
+function App({ pageStats }) {
   const localSettings = JSON.parse(localStorage.getItem('settings'))
   const [isDark, setIsDark] = useState(() => {
     if (localSettings) {
@@ -51,7 +51,7 @@ function App() {
         isColorBlind={isColorBlind}
         setIsColorBlind={setIsColorBlind}
       />
-      <Tridle />
+      <Tridle pageStats={pageStats} />
     </div>
   )
 }
