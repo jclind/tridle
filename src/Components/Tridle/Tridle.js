@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import TridleRow from '../TridleRow/TridleRow'
 import KeyBoard from './KeyBoard/KeyBoard'
 import EndGameModal from '../EndGameModal/EndGameModal'
+import { getTridleNumber } from '../../util/useDailyAnswer'
 import { setLocalStorage } from '../../util/setLocalStorage'
-import { analytics } from '../../client/firebase'
 import { logGameEvent } from '../../client/analytics'
 
 import './Tridle.scss'
@@ -16,6 +16,11 @@ const LTRS_IN_WORD = 3
 const Tridle = () => {
   // Get daily answer
   const answer = useDailyAnswer()
+  const [tridleNumber, setTridleNumber] = useState(getTridleNumber)
+
+  useEffect(() => {
+    setTridleNumber(getTridleNumber)
+  }, [answer])
 
   let localCurrGameData = JSON.parse(localStorage.getItem('current-game'))
 
@@ -194,6 +199,8 @@ const Tridle = () => {
         gameStatus={gameStatus}
         selectedRow={selectedRow}
         answer={answer}
+        tridleNumber={tridleNumber}
+        pastWords={pastWords}
       />
       <div className='puzzle-container'>
         <div className='tridle'>
