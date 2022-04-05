@@ -5,6 +5,8 @@ import Modal from 'react-modal'
 Modal.setAppElement('#root')
 
 const GameStatsModal = ({ statsModalOpen, setStatsModalOpen }) => {
+  const userGameStats = JSON.parse(localStorage.getItem('user-game-stats'))
+
   const closeStatsModal = () => {
     setStatsModalOpen(false)
   }
@@ -13,12 +15,6 @@ const GameStatsModal = ({ statsModalOpen, setStatsModalOpen }) => {
     if (document.querySelector('.app')) {
       const style = getComputedStyle(document.querySelector('.app'))
       return style.getPropertyValue('--primary-background')
-    }
-  })()
-  const secondaryBackground = (() => {
-    if (document.querySelector('.app')) {
-      const style = getComputedStyle(document.querySelector('.app'))
-      return style.getPropertyValue('--secondary-background')
     }
   })()
   const primaryText = (() => {
@@ -34,13 +30,6 @@ const GameStatsModal = ({ statsModalOpen, setStatsModalOpen }) => {
     }
   })()
 
-  const total = 10
-  const three = 3
-  const four = 5
-  const data = {
-    total: 10,
-    guesses: { 1: 0, 2: 1, 3: 3, 4: 5, 5: 0, 6: 1, 7: 0, 8: 0 },
-  }
   return (
     <Modal
       isOpen={statsModalOpen}
@@ -61,57 +50,85 @@ const GameStatsModal = ({ statsModalOpen, setStatsModalOpen }) => {
         <button className='close-modal-btn btn' onClick={closeStatsModal}>
           <AiOutlineClose />
         </button>
-        <h2>Tridle Statistics</h2>
         <div className='content'>
-          <div className='stats'>
-            <div className='data games-played'>
-              <div className='num'>1</div>
-              <label className='data-label' style={{ color: secondaryText }}>
-                Played
-              </label>
-            </div>
-            <div className='data win-percentage'>
-              <div className='num'>0</div>
-              <label className='data-label' style={{ color: secondaryText }}>
-                Win %
-              </label>
-            </div>
-            <div className='data current-win-streak'>
-              <div className='num'>0</div>
-              <label className='data-label' style={{ color: secondaryText }}>
-                Current Streak
-              </label>
-            </div>
-            <div className='data max-win-streak'>
-              <div className='num'>0</div>
-              <label className='data-label' style={{ color: secondaryText }}>
-                Max Streak
-              </label>
+          <div className='stats-container'>
+            <h2>Tridle Statistics</h2>
+            <div className='stats'>
+              <div className='data games-played'>
+                <div className='num'>
+                  {userGameStats ? userGameStats.totalGames : 0}
+                </div>
+                <label className='data-label' style={{ color: secondaryText }}>
+                  Played
+                </label>
+              </div>
+              <div className='data win-percentage'>
+                <div className='num'>
+                  {userGameStats
+                    ? Math.round(
+                        (userGameStats.gamesWon / userGameStats.totalGames) *
+                          100
+                      )
+                    : 0}
+                </div>
+                <label className='data-label' style={{ color: secondaryText }}>
+                  Win %
+                </label>
+              </div>
+              <div className='data current-win-streak'>
+                <div className='num'>
+                  {userGameStats ? userGameStats.winStreak : 0}
+                </div>
+                <label className='data-label' style={{ color: secondaryText }}>
+                  Current Streak
+                </label>
+              </div>
+              <div className='data max-win-streak'>
+                <div className='num'>
+                  {userGameStats ? userGameStats.maxWinStreak : 0}
+                </div>
+                <label className='data-label' style={{ color: secondaryText }}>
+                  Max Streak
+                </label>
+              </div>
             </div>
           </div>
           <div className='distribution'>
             <h2>Win Distribution</h2>
-            <div className='chart'>
-              {Object.keys(data.guesses).map((currNum, index) => {
-                const numGuesses = data.guesses[currNum]
-                const total = data.total
-                return (
-                  <div className='chart-line-container'>
-                    <span className='num'>{currNum}</span>
-                    <div
-                      className='line'
-                      style={{ width: `${(numGuesses / total) * 100}%` }}
-                    >
-                      {numGuesses}
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
+            <ChartDistribution
+              guesses={
+                userGameStats
+                  ? userGameStats.guesses
+                  : { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 1 }
+              }
+              total={userGameStats ? userGameStats.totalGames : 0}
+            />
           </div>
         </div>
       </>
     </Modal>
+  )
+}
+
+const ChartDistribution = ({ guesses }) => {
+  return (
+    <div className='chart'>
+      {Object.keys(guesses).map((currNum, index) => {
+        const numGuesses = guesses[currNum]
+        const total = guesses.total
+        return (
+          <div className='chart-line-container' key={index}>
+            <span className='num'>{currNum}</span>
+            <div
+              className='line'
+              style={{ width: `${(numGuesses / total) * 100}%` }}
+            >
+              {numGuesses}
+            </div>
+          </div>
+        )
+      })}
+    </div>
   )
 }
 

@@ -45,6 +45,12 @@ const Tridle = () => {
   const [currWord, setCurrWord] = useState([])
   const [currWordValid, setCurrWordValid] = useState(true)
 
+  useEffect(() => {
+    // if (localCurrGameData.gameStatus) {
+    //   setUserGameStats('WON', selectedRow + 1)
+    // }
+  }, [gameStatus])
+
   const resetGame = () => {
     setGameStatus('IN_PROGRESS')
     setGameOverModal(false)
@@ -61,6 +67,7 @@ const Tridle = () => {
     } else {
       setLocalStorage(gameStatus, selectedRow, pastWords, answer)
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pastWords, answer])
 
@@ -81,7 +88,7 @@ const Tridle = () => {
     setCurrWord([...newArr])
   }
 
-  const enterWord = wordArr => {
+  const enterWord = (wordArr, selectedRow) => {
     const letters = []
     wordArr.forEach((ltr, idx) => {
       // if the current word letter matches the equal indexed letter in answer, the letter is correct
@@ -121,28 +128,32 @@ const Tridle = () => {
     // Check if word is correct
     const allLettersCorrect =
       letters.filter(ltr => ltr.position !== 'eq').length === 0
+    console.log('here!', allLettersCorrect, gameStatus)
     if (allLettersCorrect) {
       setGameStatus('WON')
       logGameEvent('WON', selectedRow)
       setUserGameStats('WON', selectedRow)
-    } else if (selectedRow >= NUM_GUESSES - 1) {
+    } else if (selectedRow >= NUM_GUESSES) {
       setGameStatus('LOST')
       logGameEvent('LOST', selectedRow)
       setUserGameStats('LOST')
     }
+
     return letters
   }
   const submitWord = () => {
+    const currSelectedRow = selectedRow + 1
+    const currWordLength = currWord.length
+    const words = enterWord(currWord, currSelectedRow)
+
     // If the current word doesn't have the correct amount of characters, return
-    if (currWord.length !== LTRS_IN_WORD) {
+    if (currWordLength !== LTRS_IN_WORD) {
       return
     }
     if (currWordValid) {
-      setSelectedRow(selectedRow + 1)
-      setPastWords(prevWords => [
-        ...prevWords,
-        { word: currWord.length, words: enterWord(currWord) },
-      ])
+      setPastWords(prevWords => [...prevWords, { word: currWordLength, words }])
+
+      setSelectedRow(currSelectedRow)
       setCurrWord([])
     } else {
       setCurrWord([])

@@ -31,7 +31,6 @@ export const setUserGameStats = (gameStatus, numGuesses) => {
       gameStatus === 'WON' && yesterday.getTime() <= currStats.lastUpdated
         ? currStats.winStreak + 1
         : 0
-    console.log(gameStatus === 'WON')
     const newMaxWinStreak =
       currStats.maxWinStreak < newWinStreak
         ? newWinStreak
@@ -46,8 +45,6 @@ export const setUserGameStats = (gameStatus, numGuesses) => {
       maxWinStreak: newMaxWinStreak,
       lastUpdated: new Date().getTime(),
     }
-    console.log(gameStats)
-    console.log(yesterday <= new Date())
     localStorage.setItem('user-game-stats', JSON.stringify(gameStats))
   } else {
     const guesses = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 }
@@ -64,7 +61,6 @@ export const setUserGameStats = (gameStatus, numGuesses) => {
       maxWinStreak: gameStatus === 'WON' ? 1 : 0,
       lastUpdated: new Date().getTime(),
     }
-    console.log(gameStats)
     localStorage.setItem('user-game-stats', JSON.stringify(gameStats))
   }
 }

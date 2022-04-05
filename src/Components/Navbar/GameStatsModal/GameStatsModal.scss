@@ -2,13 +2,14 @@
 @import '../../../themes.scss';
 
 .game-stats-modal {
+  max-width: 450px;
   h2 {
     margin-bottom: 1.5rem;
     padding: 0;
   }
   .content {
     width: 85%;
-    margin: 0 auto;
+    margin: 1rem auto;
 
     .stats {
       display: flex;
@@ -26,7 +27,7 @@
       }
     }
     .distribution {
-      margin-top: 2rem;
+      margin-top: 3rem;
 
       .chart {
         display: flex;
