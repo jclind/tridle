@@ -6,15 +6,17 @@ import {
   AiOutlineSetting,
   AiOutlineClose,
 } from 'react-icons/ai'
+import { IoIosStats } from 'react-icons/io'
 import SettingsModal from './SettingsModal/SettingsModal'
 import InfoModal from './InfoModal/InfoModal'
+import GameStatsModal from './GameStatsModal/GameStatsModal'
 
 import Modal from 'react-modal'
 Modal.setAppElement('#root')
 
 const Navbar = ({ isDark, setIsDark, isColorBlind, setIsColorBlind }) => {
   const [infoModalOpen, setInfoModalOpen] = useState(false)
-
+  const [statsModalOpen, setStatsModalOpen] = useState(false)
   const [supportModalOpen, setSupportModalOpen] = useState(false)
   const closeSupportModal = () => {
     setSupportModalOpen(false)
@@ -37,6 +39,12 @@ const Navbar = ({ isDark, setIsDark, isColorBlind, setIsColorBlind }) => {
               onClick={() => setInfoModalOpen(true)}
             >
               <AiOutlineInfoCircle className='icon nav-icon' />
+            </button>
+            <button
+              className='btn nav-btn stats'
+              onClick={() => setStatsModalOpen(true)}
+            >
+              <IoIosStats className='icon nav-icon' />
             </button>
             <button
               className='btn nav-btn settings'
@@ -84,6 +92,10 @@ const Navbar = ({ isDark, setIsDark, isColorBlind, setIsColorBlind }) => {
           <div className='completed-text'>More content</div>
         </>
       </Modal>
+      <GameStatsModal
+        statsModalOpen={statsModalOpen}
+        setStatsModalOpen={setStatsModalOpen}
+      />
       <SettingsModal
         optionsModalOpen={optionsModalOpen}
         setOptionsModalOpen={setOptionsModalOpen}

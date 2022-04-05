@@ -3,7 +3,7 @@ import TridleRow from '../TridleRow/TridleRow'
 import KeyBoard from './KeyBoard/KeyBoard'
 import EndGameModal from '../EndGameModal/EndGameModal'
 import { getTridleNumber } from '../../util/useDailyAnswer'
-import { setLocalStorage } from '../../util/setLocalStorage'
+import { setLocalStorage, setUserGameStats } from '../../util/setLocalStorage'
 import { logGameEvent } from '../../client/analytics'
 
 import './Tridle.scss'
@@ -29,11 +29,7 @@ const Tridle = () => {
       return localCurrGameData.gameStatus
     return 'IN_PROGRESS'
   })
-  useEffect(() => {
-    if (gameStatus === 'WON') {
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameStatus])
+
   const [gameOverModal, setGameOverModal] = useState(false)
 
   const [selectedRow, setSelectedRow] = useState(() => {
@@ -48,6 +44,12 @@ const Tridle = () => {
   })
   const [currWord, setCurrWord] = useState([])
   const [currWordValid, setCurrWordValid] = useState(true)
+
+  useEffect(() => {
+    // if (localCurrGameData.gameStatus) {
+    //   setUserGameStats('WON', selectedRow + 1)
+    // }
+  }, [gameStatus])
 
   const resetGame = () => {
     setGameStatus('IN_PROGRESS')
@@ -65,6 +67,7 @@ const Tridle = () => {
     } else {
       setLocalStorage(gameStatus, selectedRow, pastWords, answer)
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pastWords, answer])
 
@@ -85,7 +88,7 @@ const Tridle = () => {
     setCurrWord([...newArr])
   }
 
-  const enterWord = wordArr => {
+  const enterWord = (wordArr, selectedRow) => {
     const letters = []
     wordArr.forEach((ltr, idx) => {
       // if the current word letter matches the equal indexed letter in answer, the letter is correct
@@ -128,23 +131,28 @@ const Tridle = () => {
     if (allLettersCorrect) {
       setGameStatus('WON')
       logGameEvent('WON', selectedRow)
-    } else if (selectedRow >= NUM_GUESSES - 1) {
+      setUserGameStats('WON', selectedRow)
+    } else if (selectedRow >= NUM_GUESSES) {
       setGameStatus('LOST')
       logGameEvent('LOST', selectedRow)
+      setUserGameStats('LOST')
     }
+
     return letters
   }
   const submitWord = () => {
+    const currSelectedRow = selectedRow + 1
+    const currWordLength = currWord.length
+    const words = enterWord(currWord, currSelectedRow)
+
     // If the current word doesn't have the correct amount of characters, return
-    if (currWord.length !== LTRS_IN_WORD) {
+    if (currWordLength !== LTRS_IN_WORD) {
       return
     }
     if (currWordValid) {
-      setSelectedRow(selectedRow + 1)
-      setPastWords(prevWords => [
-        ...prevWords,
-        { word: currWord.length, words: enterWord(currWord) },
-      ])
+      setPastWords(prevWords => [...prevWords, { word: currWordLength, words }])
+
+      setSelectedRow(currSelectedRow)
       setCurrWord([])
     } else {
       setCurrWord([])

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { AiOutlineClose, AiOutlineShareAlt } from 'react-icons/ai'
 
 import Modal from 'react-modal'
@@ -13,6 +13,8 @@ const EndGameModal = ({
   tridleNumber,
   pastWords,
 }) => {
+  const [isCopied, setIsCopied] = useState(false)
+
   const copyResults = (numGuesses, tridleNumber, pastWords) => {
     let text = `Tridle #${tridleNumber}\n`
 
@@ -31,6 +33,9 @@ const EndGameModal = ({
     })
 
     text += '\n\nhttps://tridle.netlify.app/'
+
+    setIsCopied(true)
+    setTimeout(() => setIsCopied(false), 3000)
 
     return navigator.clipboard.writeText(text)
   }
@@ -93,9 +98,10 @@ const EndGameModal = ({
             Congrats, you completed the Tridle in {selectedRow} guess
             {selectedRow > 1 && 'es'}!
           </div>
-          <div className='copy-results btn'>
+          <div className='copy-results'>
+            {isCopied && 'Copied To Clipboard'}
             <button
-              className='copy'
+              className='copy btn'
               style={{ background: correctGuess }}
               onClick={() => copyResults(selectedRow, tridleNumber, pastWords)}
             >
@@ -113,9 +119,10 @@ const EndGameModal = ({
           <div className='completed-text'>
             The word was <span className='word'>{answer}</span>.
           </div>
-          <div className='copy-results btn'>
+          <div className='copy-results'>
+            {isCopied && 'Copied To Clipboard'}
             <button
-              className='copy'
+              className='copy btn'
               style={{ background: correctGuess }}
               onClick={() => copyResults(selectedRow, tridleNumber, pastWords)}
             >

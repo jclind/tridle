@@ -10,7 +10,9 @@ const startDate = new Date(
 export function useDailyAnswer() {
   // Returns word from answers array of words based on current day. Answer will be the same for everyone every day
   const getAnswer = () => {
-    const numDays = diffDays(startDate, new Date())
+    const currDate = new Date()
+    currDate.setHours(0, 0, 0, 0)
+    const numDays = diffDays(startDate, currDate)
     const word = answers[numDays]
     return word.toUpperCase()
   }
