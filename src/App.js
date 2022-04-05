@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import Tridle from './Components/Tridle/Tridle'
 import Navbar from './Components/Navbar/Navbar'
-import ReactGA from 'react-ga'
-const TRACKING_ID = 'G-XKBYT553LJ'
-ReactGA.initialize(TRACKING_ID)
+// import ReactGA from 'react-ga'
+// import TagManager from 'react-gtm-module'
+// const TRACKING_ID = 'G-XKBYT553LJ'
+// // ReactGA.initialize(TRACKING_ID, { debug: true })
+// const tagManagerArgs = {
+//   gtmId: TRACKING_ID,
+// }
+// TagManager.initialize(tagManagerArgs)
 
 function App() {
   useEffect(() => {
-    ReactGA.pageview('Init page view')
+    // ReactGA.pageview('Init page view')
   }, [])
 
   const localSettings = JSON.parse(localStorage.getItem('settings'))
@@ -58,7 +63,7 @@ function App() {
         isColorBlind={isColorBlind}
         setIsColorBlind={setIsColorBlind}
       />
-      <Tridle pageStats={ReactGA} />
+      <Tridle />
     </div>
   )
 }

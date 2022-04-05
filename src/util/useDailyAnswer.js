@@ -26,3 +26,7 @@ export function useDailyAnswer() {
 
   return answer
 }
+
+export const getTridleNumber = () => {
+  return diffDays(startDate, new Date())
+}

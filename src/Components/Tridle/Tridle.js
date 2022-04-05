@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react'
 import TridleRow from '../TridleRow/TridleRow'
 import KeyBoard from './KeyBoard/KeyBoard'
 import EndGameModal from '../EndGameModal/EndGameModal'
+import { getTridleNumber } from '../../util/useDailyAnswer'
 import { setLocalStorage } from '../../util/setLocalStorage'
+import { logGameEvent } from '../../client/analytics'
+
 import './Tridle.scss'
 import { threeLetterWords } from '../../assets/data/threeLetterWords'
 import { useDailyAnswer } from '../../util/useDailyAnswer'
@@ -10,9 +13,14 @@ import { useDailyAnswer } from '../../util/useDailyAnswer'
 const NUM_GUESSES = 8
 const LTRS_IN_WORD = 3
 
-const Tridle = ({ pageStats }) => {
+const Tridle = () => {
   // Get daily answer
   const answer = useDailyAnswer()
+  const [tridleNumber, setTridleNumber] = useState(getTridleNumber)
+
+  useEffect(() => {
+    setTridleNumber(getTridleNumber)
+  }, [answer])
 
   let localCurrGameData = JSON.parse(localStorage.getItem('current-game'))
 
@@ -23,10 +31,6 @@ const Tridle = ({ pageStats }) => {
   })
   useEffect(() => {
     if (gameStatus === 'WON') {
-      pageStats.event({
-        category: 'User',
-        action: 'Game Finished',
-      })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStatus])
@@ -123,8 +127,10 @@ const Tridle = ({ pageStats }) => {
       letters.filter(ltr => ltr.position !== 'eq').length === 0
     if (allLettersCorrect) {
       setGameStatus('WON')
+      logGameEvent('WON', selectedRow)
     } else if (selectedRow >= NUM_GUESSES - 1) {
       setGameStatus('LOST')
+      logGameEvent('LOST', selectedRow)
     }
     return letters
   }
@@ -193,6 +199,8 @@ const Tridle = ({ pageStats }) => {
         gameStatus={gameStatus}
         selectedRow={selectedRow}
         answer={answer}
+        tridleNumber={tridleNumber}
+        pastWords={pastWords}
       />
       <div className='puzzle-container'>
         <div className='tridle'>

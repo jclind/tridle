@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { AiOutlineClose } from 'react-icons/ai'
+import { AiOutlineClose, AiOutlineShareAlt } from 'react-icons/ai'
 
 import Modal from 'react-modal'
 Modal.setAppElement('#root')
@@ -10,7 +10,31 @@ const EndGameModal = ({
   gameStatus,
   selectedRow,
   answer,
+  tridleNumber,
+  pastWords,
 }) => {
+  const copyResults = (numGuesses, tridleNumber, pastWords) => {
+    let text = `Tridle #${tridleNumber}\n`
+
+    pastWords.forEach(word => {
+      let wordStr = '\n'
+      word.words.forEach(letter => {
+        if (letter.position === 'eq') {
+          wordStr += '🟩'
+        } else if (letter.position === 'in') {
+          wordStr += '🟨'
+        } else {
+          wordStr += '⬛️'
+        }
+      })
+      text += wordStr
+    })
+
+    text += '\n\nhttps://tridle.netlify.app/'
+
+    return navigator.clipboard.writeText(text)
+  }
+
   const closeModal = () => {
     setGameOverModal(false)
   }
@@ -24,6 +48,25 @@ const EndGameModal = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStatus])
+
+  const primaryBackground = (() => {
+    if (document.querySelector('.app')) {
+      const style = getComputedStyle(document.querySelector('.app'))
+      return style.getPropertyValue('--primary-background')
+    }
+  })()
+  const primaryText = (() => {
+    if (document.querySelector('.app')) {
+      const style = getComputedStyle(document.querySelector('.app'))
+      return style.getPropertyValue('--primary-text')
+    }
+  })()
+  const correctGuess = (() => {
+    if (document.querySelector('.app')) {
+      const style = getComputedStyle(document.querySelector('.app'))
+      return style.getPropertyValue('--correct-guess-color')
+    }
+  })()
   return (
     <Modal
       isOpen={gameOverModal}
@@ -35,18 +78,8 @@ const EndGameModal = ({
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
         },
         content: {
-          background: (() => {
-            if (document.querySelector('.app')) {
-              const style = getComputedStyle(document.querySelector('.app'))
-              return style.getPropertyValue('--primary-background')
-            }
-          })(),
-          color: (() => {
-            if (document.querySelector('.app')) {
-              const style = getComputedStyle(document.querySelector('.app'))
-              return style.getPropertyValue('--primary-text')
-            }
-          })(),
+          background: primaryBackground,
+          color: primaryText,
         },
       }}
     >
@@ -60,6 +93,16 @@ const EndGameModal = ({
             Congrats, you completed the Tridle in {selectedRow} guess
             {selectedRow > 1 && 'es'}!
           </div>
+          <div className='copy-results btn'>
+            <button
+              className='copy'
+              style={{ background: correctGuess }}
+              onClick={() => copyResults(selectedRow, tridleNumber, pastWords)}
+            >
+              SHARE
+              <AiOutlineShareAlt className='icon' />
+            </button>
+          </div>
         </>
       ) : (
         <>
@@ -69,6 +112,16 @@ const EndGameModal = ({
           </button>
           <div className='completed-text'>
             The word was <span className='word'>{answer}</span>.
+          </div>
+          <div className='copy-results btn'>
+            <button
+              className='copy'
+              style={{ background: correctGuess }}
+              onClick={() => copyResults(selectedRow, tridleNumber, pastWords)}
+            >
+              SHARE
+              <AiOutlineShareAlt className='icon' />
+            </button>
           </div>
         </>
       )}
