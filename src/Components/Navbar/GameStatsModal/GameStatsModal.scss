@@ -3,6 +3,8 @@
 
 .game-stats-modal {
   max-width: 450px;
+  width: 90% !important;
+  box-sizing: border-box;
   h2 {
     margin-bottom: 1.5rem;
     padding: 0;
