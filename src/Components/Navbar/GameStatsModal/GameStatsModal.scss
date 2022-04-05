@@ -1,0 +1,56 @@
+@import '../../../helpers.scss';
+@import '../../../themes.scss';
+
+.game-stats-modal {
+  .content {
+    width: 85%;
+    margin: 0 auto;
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      .data {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.65rem;
+        max-width: 80px;
+        .num {
+          font-weight: 600;
+          font-size: toRem(18);
+        }
+      }
+    }
+    .distribution {
+      margin-top: 2rem;
+
+      .chart {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        .chart-line-container {
+          display: flex;
+          gap: 0.785rem;
+          height: 22px;
+          width: 100%;
+
+          .num {
+            font-size: toRem(18);
+            width: 1ch;
+          }
+
+          .line {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 0.5rem;
+            height: 100%;
+            font-size: toRem(18);
+            background: $gray-900;
+            min-width: 1ch;
+          }
+        }
+      }
+    }
+  }
+}
