@@ -128,7 +128,6 @@ const Tridle = () => {
     // Check if word is correct
     const allLettersCorrect =
       letters.filter(ltr => ltr.position !== 'eq').length === 0
-    console.log('here!', allLettersCorrect, gameStatus)
     if (allLettersCorrect) {
       setGameStatus('WON')
       logGameEvent('WON', selectedRow)

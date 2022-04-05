@@ -115,7 +115,6 @@ const ChartDistribution = ({ guesses, totalWins }) => {
     <div className='chart'>
       {Object.keys(guesses).map((currNum, index) => {
         const numGuesses = guesses[currNum]
-        console.log(numGuesses, totalWins)
         return (
           <div className='chart-line-container' key={index}>
             <span className='num'>{currNum}</span>
