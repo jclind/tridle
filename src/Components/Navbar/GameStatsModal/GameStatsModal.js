@@ -101,7 +101,7 @@ const GameStatsModal = ({ statsModalOpen, setStatsModalOpen }) => {
                   ? userGameStats.guesses
                   : { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 1 }
               }
-              total={userGameStats ? userGameStats.totalGames : 0}
+              totalWins={userGameStats ? userGameStats.gamesWon : 0}
             />
           </div>
         </div>
@@ -110,20 +110,22 @@ const GameStatsModal = ({ statsModalOpen, setStatsModalOpen }) => {
   )
 }
 
-const ChartDistribution = ({ guesses }) => {
+const ChartDistribution = ({ guesses, totalWins }) => {
   return (
     <div className='chart'>
       {Object.keys(guesses).map((currNum, index) => {
         const numGuesses = guesses[currNum]
-        const total = guesses.total
+        console.log(numGuesses, totalWins)
         return (
           <div className='chart-line-container' key={index}>
             <span className='num'>{currNum}</span>
-            <div
-              className='line'
-              style={{ width: `${(numGuesses / total) * 100}%` }}
-            >
-              {numGuesses}
+            <div className='line-container'>
+              <div
+                className='line'
+                style={{ width: `${(numGuesses / totalWins) * 100}%` }}
+              >
+                {numGuesses}
+              </div>
             </div>
           </div>
         )
