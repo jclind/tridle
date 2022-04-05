@@ -130,12 +130,12 @@ const Tridle = () => {
       letters.filter(ltr => ltr.position !== 'eq').length === 0
     if (allLettersCorrect) {
       setGameStatus('WON')
-      logGameEvent('WON', selectedRow)
       setUserGameStats('WON', selectedRow)
+      logGameEvent('WON', selectedRow)
     } else if (selectedRow >= NUM_GUESSES) {
       setGameStatus('LOST')
-      logGameEvent('LOST', selectedRow)
       setUserGameStats('LOST')
+      logGameEvent('LOST', selectedRow)
     }
 
     return letters
