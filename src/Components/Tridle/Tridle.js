@@ -3,7 +3,7 @@ import TridleRow from '../TridleRow/TridleRow'
 import KeyBoard from './KeyBoard/KeyBoard'
 import EndGameModal from '../EndGameModal/EndGameModal'
 import { getTridleNumber } from '../../util/useDailyAnswer'
-import { setLocalStorage } from '../../util/setLocalStorage'
+import { setLocalStorage, setUserGameStats } from '../../util/setLocalStorage'
 import { logGameEvent } from '../../client/analytics'
 
 import './Tridle.scss'
@@ -29,11 +29,7 @@ const Tridle = () => {
       return localCurrGameData.gameStatus
     return 'IN_PROGRESS'
   })
-  useEffect(() => {
-    if (gameStatus === 'WON') {
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameStatus])
+
   const [gameOverModal, setGameOverModal] = useState(false)
 
   const [selectedRow, setSelectedRow] = useState(() => {
@@ -128,9 +124,11 @@ const Tridle = () => {
     if (allLettersCorrect) {
       setGameStatus('WON')
       logGameEvent('WON', selectedRow)
+      setUserGameStats('WON', selectedRow)
     } else if (selectedRow >= NUM_GUESSES - 1) {
       setGameStatus('LOST')
       logGameEvent('LOST', selectedRow)
+      setUserGameStats('LOST')
     }
     return letters
   }

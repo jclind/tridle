@@ -2,9 +2,14 @@
 @import '../../../themes.scss';
 
 .game-stats-modal {
+  h2 {
+    margin-bottom: 1.5rem;
+    padding: 0;
+  }
   .content {
     width: 85%;
     margin: 0 auto;
+
     .stats {
       display: flex;
       justify-content: space-between;
@@ -30,8 +35,8 @@
         gap: 0.5rem;
         .chart-line-container {
           display: flex;
-          gap: 0.785rem;
-          height: 22px;
+          gap: 0.75rem;
+          height: 25px;
           width: 100%;
 
           .num {
