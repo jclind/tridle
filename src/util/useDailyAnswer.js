@@ -12,7 +12,7 @@ export function useDailyAnswer() {
   const getAnswer = () => {
     const currDate = new Date()
     currDate.setHours(0, 0, 0, 0)
-    const numDays = diffDays(startDate, currDate)
+    const numDays = diffDays(startDate, currDate) % 500
     const word = answers[numDays]
     return word.toUpperCase()
   }
