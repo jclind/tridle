@@ -69,3 +69,7 @@ $max-width: 1400px;
 $font-family: 'Montserrat', sans-serif;
 
 $keyboard-height: toRem(185);
+
+@function color($color-name) {
+  @return var(--#{$color-name});
+}

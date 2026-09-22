@@ -1,5 +1,4 @@
-@import '../../../helpers.scss';
-@import '../../../themes.scss';
+@use '../../../helpers' as *;
 
 .info-modal {
   max-width: 500px;
