@@ -156,9 +156,10 @@ const Tridle = () => {
       return
     }
     const words = enterWord(currWord, currSelectedRow)
-    setPastWords(prevWords => [...prevWords, { word: currWordLength, words }])
-
+    // Set the row first. Updates from the window keydown listener aren't
+    // batched, and the effect that saves the game runs when pastWords changes.
     setSelectedRow(currSelectedRow)
+    setPastWords(prevWords => [...prevWords, { word: currWordLength, words }])
     setCurrWord([])
   }
 
