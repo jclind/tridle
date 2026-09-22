@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import diffDays from './diffDays'
 import { answers } from '../assets/data/threeLetterWords'
-import { scheduleJob } from 'node-schedule'
 
 const startDate = new Date(
   'Wed Mar 30 2022 00:00:00 GMT-0400 (Eastern Daylight Time)'
@@ -20,9 +19,17 @@ export function useDailyAnswer() {
 
   useEffect(() => {
     // Update answer at the start of every day
-    scheduleJob('0 0 * * *', () => {
-      setAnswer(getAnswer)
-    })
+    let timeoutId
+    const scheduleNextMidnight = () => {
+      const nextMidnight = new Date()
+      nextMidnight.setHours(24, 0, 0, 0)
+      timeoutId = setTimeout(() => {
+        setAnswer(getAnswer)
+        scheduleNextMidnight()
+      }, nextMidnight - new Date())
+    }
+    scheduleNextMidnight()
+    return () => clearTimeout(timeoutId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
