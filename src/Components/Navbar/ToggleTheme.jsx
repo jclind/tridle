@@ -1,4 +1,3 @@
-import React from 'react'
 import { BsMoonStars, BsSun, BsCircle } from 'react-icons/bs'
 
 const ToggleTheme = ({ isDark, setIsDark }) => {

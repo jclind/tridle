@@ -1,4 +1,3 @@
-import React from 'react'
 import './TridleRow.scss'
 
 const TridleTile = ({ letter, position }) => {

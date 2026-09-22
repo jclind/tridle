@@ -1,4 +1,3 @@
-import React from 'react'
 import { AiOutlineClose, AiFillGithub } from 'react-icons/ai'
 import { BsArrowRightShort } from 'react-icons/bs'
 import { BiGitBranch } from 'react-icons/bi'
