@@ -43,7 +43,3 @@
   --correct-guess-color: #f5793a;
   --in-guess-color: #85c0f9;
 }
-
-@function color($color-name) {
-  @return var(--#{$color-name});
-}

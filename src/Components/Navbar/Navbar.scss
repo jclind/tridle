@@ -1,5 +1,4 @@
-@import '../../helpers.scss';
-@import '../../themes.scss';
+@use '../../helpers' as *;
 
 nav {
   display: flex;
