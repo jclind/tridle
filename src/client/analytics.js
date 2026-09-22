@@ -28,6 +28,8 @@ export const logGameEvent = (status, numGuesses) => {
   const timelineRef = collection(db, 'timeline')
 
   const deviceType = getDeviceType()
+  // Dot path so updateDoc bumps one counter instead of replacing the whole map
+  const deviceField = `deviceType.${deviceType}`
   const id = uuidv4()
   const currDate = new Date()
   const currUserStats = JSON.parse(localStorage.getItem('user-game-stats'))
@@ -37,11 +39,7 @@ export const logGameEvent = (status, numGuesses) => {
       games_completed: increment(1),
       games_won: increment(1),
       guesses: increment(numGuesses),
-      deviceType: {
-        mobile: deviceType === 'mobile' ? increment(1) : increment(0),
-        tablet: deviceType === 'tablet' ? increment(1) : increment(0),
-        desktop: deviceType === 'desktop' ? increment(1) : increment(0),
-      },
+      [deviceField]: increment(1),
     })
     addDoc(timelineRef, {
       id: id,
@@ -55,11 +53,7 @@ export const logGameEvent = (status, numGuesses) => {
     updateDoc(statsRef, {
       games_completed: increment(1),
       games_lost: increment(1),
-      deviceType: {
-        mobile: deviceType === 'mobile',
-        tablet: deviceType === 'tablet',
-        desktop: deviceType === 'desktop',
-      },
+      [deviceField]: increment(1),
     })
     addDoc(timelineRef, {
       id: id,
