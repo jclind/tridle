@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Tridle from './Components/Tridle/Tridle'
 import Navbar from './Components/Navbar/Navbar'
 
@@ -34,7 +34,6 @@ function App() {
       }
       localStorage.setItem('settings', JSON.stringify(settingsData))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDark, isColorBlind])
 
   return (

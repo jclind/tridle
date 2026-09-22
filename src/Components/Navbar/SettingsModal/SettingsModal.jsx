@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import './SettingsModal.scss'
 import Switch from 'react-switch'

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import TridleRow from '../TridleRow/TridleRow'
 import KeyBoard from './KeyBoard/KeyBoard'
 import EndGameModal from '../EndGameModal/EndGameModal'

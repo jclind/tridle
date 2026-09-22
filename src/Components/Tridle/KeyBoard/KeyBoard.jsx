@@ -1,4 +1,3 @@
-import React from 'react'
 import './KeyBoard.scss'
 import { FiDelete } from 'react-icons/fi'
 import { BsArrowReturnLeft } from 'react-icons/bs'

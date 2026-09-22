@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { AiOutlineClose, AiOutlineShareAlt } from 'react-icons/ai'
 
 import Modal from 'react-modal'
