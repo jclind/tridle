@@ -5,7 +5,7 @@ import {
   collection,
   updateDoc,
   increment,
-} from 'firebase/firestore'
+} from 'firebase/firestore/lite'
 import { v4 as uuidv4 } from 'uuid'
 
 const getDeviceType = () => {
