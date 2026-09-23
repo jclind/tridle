@@ -143,20 +143,24 @@ const Tridle = () => {
   const submitWord = () => {
     const currSelectedRow = selectedRow + 1
     const currWordLength = currWord.length
-    const words = enterWord(currWord, currSelectedRow)
 
     // If the current word doesn't have the correct amount of characters, return
     if (currWordLength !== LTRS_IN_WORD) {
       return
     }
-    if (currWordValid) {
-      setPastWords(prevWords => [...prevWords, { word: currWordLength, words }])
-
-      setSelectedRow(currSelectedRow)
+    // Check the word here rather than trusting currWordValid, which an effect
+    // sets after render. enterWord records wins and losses, so it only runs
+    // for complete dictionary words.
+    if (!threeLetterWords.includes(currWord.join('').toLowerCase())) {
       setCurrWord([])
-    } else {
-      setCurrWord([])
+      return
     }
+    const words = enterWord(currWord, currSelectedRow)
+    // Set the row first. Updates from the window keydown listener aren't
+    // batched, and the effect that saves the game runs when pastWords changes.
+    setSelectedRow(currSelectedRow)
+    setPastWords(prevWords => [...prevWords, { word: currWordLength, words }])
+    setCurrWord([])
   }
 
   // Event Listeners
