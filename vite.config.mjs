@@ -3,6 +3,10 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./glm-test-setup.js'],
+  },
   build: {
     // Netlify publishes build/, which is where CRA wrote its output
     outDir: 'build',
