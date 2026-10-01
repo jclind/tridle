@@ -1,7 +1,11 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, afterEach } from 'vitest'
 import { setLocalStorage, setUserGameStats } from './setLocalStorage'
 
 const HOUR = 60 * 60 * 1000
+
+afterEach(() => {
+  vi.useRealTimers()
+})
 
 const zeroGuesses = () => ({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 })
 
@@ -100,6 +104,10 @@ describe('setUserGameStats', () => {
   })
 
   it('also counts a streak when the last game was 24 hours ago', () => {
+    // A fixed noon, so a DST change can't put "24 hours ago" before
+    // yesterday's midnight.
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(new Date(2026, 5, 15, 12))
     seedStats({
       gamesWon: 1,
       winStreak: 1,

@@ -11,17 +11,12 @@ vi.mock('../../client/firebase', () => ({
   analytics: {},
 }))
 
-const START = new Date(
-  'Wed Mar 30 2022 00:00:00 GMT-0400 (Eastern Daylight Time)'
-)
-const HOUR = 60 * 60 * 1000
-
-// Same trick as the useDailyAnswer tests: 11 hours into the answer's day
-// makes local-midnight truncation timezone proof.
+// The suite runs in America/New_York (vite.config.mjs), so 11:00 local on
+// the answer's day maps to that answer.
 const pinAnswer = word => {
   const idx = answers.indexOf(word.toLowerCase())
   if (idx === -1) throw new Error(word + ' is not in the answers list')
-  vi.setSystemTime(new Date(START.getTime() + (idx * 24 + 11) * HOUR))
+  vi.setSystemTime(new Date(2022, 2, 30 + idx, 11))
 }
 
 const pressKey = key =>
@@ -97,6 +92,21 @@ describe('guess checking and letter colouring', () => {
       'in tridle-tile',
       'nin tridle-tile',
       'nin tridle-tile',
+    ])
+  })
+
+  it('greys an unplaced copy when the only copy in the answer is already green', () => {
+    // TAT against CAT: the T in place takes the answer's only T.
+    pinAnswer('CAT')
+    const { container } = render(<Tridle />)
+
+    typeWord('tat')
+    submit()
+
+    expect(tileClasses(rows(container)[0])).toEqual([
+      'nin tridle-tile',
+      'eq tridle-tile',
+      'eq tridle-tile',
     ])
   })
 
@@ -186,7 +196,39 @@ describe('losing', () => {
   })
 })
 
+describe('winning on the last guess', () => {
+  it('counts a win on the eighth guess as a win, not a loss', () => {
+    pinAnswer('CAT')
+    render(<Tridle />)
+
+    const wrongGuesses = ['dog', 'bed', 'fig', 'him', 'jug', 'key', 'log']
+    wrongGuesses.forEach(word => {
+      typeWord(word)
+      submit()
+    })
+    typeWord('cat')
+    submit()
+
+    expect(screen.getByText('Puzzle Solved!')).toBeTruthy()
+    expect(readGame().gameStatus).toBe('WON')
+    const stats = readStats()
+    expect(stats.gamesWon).toBe(1)
+    expect(stats.gamesLost).toBe(0)
+    expect(stats.guesses['8']).toBe(1)
+    expect(logGameEvent).toHaveBeenCalledWith('WON', 8)
+  })
+})
+
 describe('input rules', () => {
+  it('ignores a fourth letter', () => {
+    pinAnswer('CAT')
+    const { container } = render(<Tridle />)
+
+    typeWord('cats')
+
+    expect(tileLetters(rows(container)[0])).toEqual(['C', 'A', 'T'])
+  })
+
   it('rejects a word that is not in the dictionary', () => {
     pinAnswer('CAT')
     const { container } = render(<Tridle />)
@@ -258,7 +300,23 @@ describe('input rules', () => {
 })
 
 describe('keyboard colours', () => {
-  it('shows each guessed letter in its best state', () => {
+  it('keeps a key yellow when the same guess also greys a repeat of it', () => {
+    // AHA against CAT colours in/nin/nin. The A key must stay yellow.
+    pinAnswer('CAT')
+    render(<Tridle />)
+
+    typeWord('aha')
+    submit()
+
+    expect(screen.getByRole('button', { name: 'a' }).className).toBe(
+      'key btn in'
+    )
+    expect(screen.getByRole('button', { name: 'h' }).className).toBe(
+      'key btn nin'
+    )
+  })
+
+  it('shows each guessed letter in its state', () => {
     pinAnswer('CAT')
     render(<Tridle />)
 
@@ -371,8 +429,10 @@ describe('saved games', () => {
 
 // Guards the dictionary the whole game depends on
 describe('word list sanity', () => {
-  it('only scores guesses that are complete dictionary words', () => {
-    expect(threeLetterWords).toContain('cat')
-    expect(threeLetterWords).not.toContain('qqq')
+  // Enter only accepts dictionary words, so an answer missing from the
+  // dictionary can't be won. Six were once missing (f8869c1).
+  it('contains every answer, so every day is winnable', () => {
+    const dictionary = new Set(threeLetterWords)
+    expect(answers.filter(a => !dictionary.has(a))).toEqual([])
   })
 })

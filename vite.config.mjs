@@ -6,6 +6,9 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./glm-test-setup.js'],
+    // The puzzle day is anchored to Eastern midnight, so tests run there.
+    // Other zones shift which answer a wall-clock time maps to by design.
+    env: { TZ: 'America/New_York' },
   },
   build: {
     // Netlify publishes build/, which is where CRA wrote its output

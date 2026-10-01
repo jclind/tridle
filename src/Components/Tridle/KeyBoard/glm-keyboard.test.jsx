@@ -34,7 +34,7 @@ describe('KeyBoard', () => {
     renderKeyboard(pastWordsFor([guess('A', 'in')]))
 
     const z = screen.getByRole('button', { name: 'z' })
-    expect(z.className).not.toMatch(/\b(eq|in|nin)\b/)
+    expect(z.className).toBe('key btn')
   })
 
   it('never downgrades a key that has been eq', () => {

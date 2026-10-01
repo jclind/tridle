@@ -10,12 +10,11 @@ const START = new Date(
 )
 const HOUR = 60 * 60 * 1000
 
-// An instant 11 hours into answer-day `idx`. useDailyAnswer truncates the
-// current time to local midnight before counting days, so picking a point
-// 11 hours past the boundary keeps the rounded day count equal to `idx`
-// no matter what timezone the tests run in.
-const duringAnswerDay = idx =>
-  new Date(START.getTime() + (idx * 24 + 11) * HOUR)
+// A local wall-clock time on answer-day `idx`. The suite runs in
+// America/New_York (vite.config.mjs), the zone the start date is anchored to,
+// so local midnight is the day boundary.
+const duringAnswerDay = (idx, hour = 11, min = 0, sec = 0, ms = 0) =>
+  new Date(2022, 2, 30 + idx, hour, min, sec, ms)
 
 // Minimal harness that puts the hook's answer in the DOM
 const AnswerProbe = () => {
@@ -68,15 +67,18 @@ describe('useDailyAnswer', () => {
     expect(answerText()).toBe('CAT')
   })
 
-  it('swaps in the next answer after local midnight', () => {
-    vi.setSystemTime(duringAnswerDay(77))
+  it('swaps in the next answer exactly at local midnight', () => {
+    vi.setSystemTime(duringAnswerDay(77, 23, 0))
     render(<AnswerProbe />)
     expect(answerText()).toBe('HIS')
 
-    // The hook schedules a timeout at the next local midnight. Advancing
-    // a full 25 hours fires it and recomputes the answer for the new day.
+    // The hook schedules a timeout for the next local midnight.
     act(() => {
-      vi.advanceTimersByTime(25 * HOUR)
+      vi.advanceTimersByTime(HOUR - 1)
+    })
+    expect(answerText()).toBe('HIS')
+    act(() => {
+      vi.advanceTimersByTime(1)
     })
     expect(answerText()).toBe(answers[78].toUpperCase())
     expect(answerText()).toBe('BOT')
@@ -89,8 +91,22 @@ describe('getTridleNumber', () => {
     expect(getTridleNumber()).toBe(0)
   })
 
-  it('counts the days since the start date', () => {
-    vi.setSystemTime(duringAnswerDay(3))
+  // The shared number has to name the same puzzle as the answer all day.
+  it.each([
+    [0, 0],
+    [11, 0],
+    [12, 30],
+    [13, 0],
+    [23, 59],
+  ])('stays on the answer\'s day at %i:%i', (hour, min) => {
+    vi.setSystemTime(duringAnswerDay(3, hour, min))
     expect(getTridleNumber()).toBe(3)
+  })
+
+  it('names the same day across a DST change', () => {
+    // 2022-11-06 is a 25-hour day in New York.
+    const idx = 221 // 2022-11-06
+    vi.setSystemTime(duringAnswerDay(idx, 23, 0))
+    expect(getTridleNumber()).toBe(idx)
   })
 })

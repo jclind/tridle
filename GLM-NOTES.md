@@ -34,9 +34,10 @@ Tests added on branch `glm/tests`, 2026-09-28. No application source was changed
 | `src/glm-app.test.jsx` | 5 | theme class from saved settings, default persistence, toggle, info and stats modals |
 | `src/glm-suspected-bugs.test.jsx` | 3 (skipped) | the suspected bugs below |
 
-Dates are pinned with fake timers. Tests pick an instant 11 hours into the
-answer's day so that `useDailyAnswer`'s local-midnight truncation lands on the
-same answer in any timezone the suite might run in.
+Dates are pinned with fake timers. (GLM's version picked an instant 11 hours
+into the answer's day and claimed that worked in any timezone. It failed 16
+tests under Australia/Eucla and hid the getTridleNumber bug below. The suite
+now runs in America/New_York; see the second review.)
 
 ## Final suite result
 
@@ -54,13 +55,13 @@ same answer in any timezone the suite might run in.
 - `src/index.jsx`: bootstrap only (ReactDOM render plus scss imports).
 - InfoModal, SettingsModal, ToggleTheme beyond what `glm-app.test.jsx` covers:
   static markup plus `getComputedStyle` lookups that return nothing in jsdom,
-  so there is no logic to exercise. The colorblind switch is covered through
-  App's settings persistence.
+  so there is no logic to exercise. (GLM said the colorblind switch was
+  covered through App's settings persistence. It isn't: no test clicks it.)
 - Navbar's support modal: a "Content will go here" placeholder.
 - SCSS and visual styling generally: jsdom computes no styles.
-- A DST-crossing `diffDays` case: the result depends on the host timezone
-  observing DST. The rounding behavior it would exercise is covered by
-  deterministic UTC-based tests instead.
+- A DST-crossing `diffDays` case. (GLM's reason, that it depends on the host
+  timezone, is wrong: diffDays is plain epoch arithmetic. The second review
+  added a 25-hour-day case for getTridleNumber instead.)
 
 ## Suspected bugs
 
@@ -87,3 +88,38 @@ lockfile, and the vitest block in vite.config.mjs changed. All 3 suspected
 bugs fail when un-skipped, and the cited lines match: setLocalStorage.js:30-33
 resets the streak to 0, KeyBoard.jsx:9-13 protects only `eq`, and
 GameStatsModal.jsx:123 divides by totalWins.
+
+## Second review by Claude, 2026-10-01
+
+A review agent checked every test against intent, not current output. It
+compared the game's colouring with a reference Wordle scorer over every
+answer and every dictionary word and found no mismatch, so the
+duplicate-letter tests were right.
+
+Source fixes, each with a test that failed before:
+
+- **The shared puzzle number ran one ahead from noon on (useDailyAnswer.js).**
+  getTridleNumber counted from `new Date()` while the answer counts from local
+  midnight, and diffDays rounds, so the share text said #4 on day 3 after
+  12:00. Now both use local midnight. Tested at 00:00, 11:00, 12:30, 13:00,
+  23:59 and on a 25-hour DST day.
+- **Keyboard (KeyBoard.jsx)** keeps each letter's best state, eq over in over
+  nin. A repeated letter in one guess (AHA vs CAT) used to grey a yellow key.
+  Unguessed keys no longer get a literal `undefined` class.
+- **Streak (setLocalStorage.js):** a win after a gap starts a streak of 1,
+  not 0.
+- **Stats bars (GameStatsModal.jsx):** with no wins every bar was NaN% wide,
+  which drew them full width. Now 0%.
+
+Test fixes:
+
+- The suite runs in America/New_York (`test.env.TZ` in vite.config.mjs), the
+  zone the start date is anchored to. Passes under Eucla, Tokyo and UTC shells.
+- The midnight test steps to 1 ms before and exactly at midnight instead of
+  jumping 25 hours.
+- The 24-hours-ago streak test pins its clock, so DST can't flip it.
+- Added: TAT vs CAT (nin/eq/eq), a win on the 8th guess, a 4th letter being
+  ignored, every answer being in the dictionary (replaces a test that only
+  checked 'cat' was there), exact `key btn` for an unguessed key.
+
+Suite: 72 tests, 72 pass, 0 skipped. `npm run build` works.
