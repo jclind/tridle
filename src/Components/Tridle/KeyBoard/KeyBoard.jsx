@@ -3,74 +3,79 @@ import { FiDelete } from 'react-icons/fi'
 import { BsArrowReturnLeft } from 'react-icons/bs'
 
 const KeyBoard = ({ pastWords, addLetter, deleteLetter, submitWord }) => {
+  // A key shows the best state its letter has had in any guess: a grey tile
+  // from a repeated letter must not hide a yellow or green one.
+  const rank = { nin: 1, in: 2, eq: 3 }
   const letters = {}
   pastWords.forEach(el => {
     el.words.forEach(word => {
-      if (letters && letters[word.letter] === 'eq') {
-        return
+      const prev = letters[word.letter]
+      if (!prev || rank[word.position] > rank[prev]) {
+        letters[word.letter] = word.position
       }
-      letters[word.letter] = word.position
     })
   })
+  const keyClass = letter =>
+    letters[letter] ? `key btn ${letters[letter]}` : 'key btn'
   return (
     <div className='keyboard-container'>
       <div className='row row-1'>
         <button
-          className={`key btn ${letters.Q}`}
+          className={keyClass('Q')}
           onClick={() => addLetter('Q')}
         >
           q
         </button>
         <button
-          className={`key btn ${letters.W}`}
+          className={keyClass('W')}
           onClick={() => addLetter('W')}
         >
           w
         </button>
         <button
-          className={`key btn ${letters.E}`}
+          className={keyClass('E')}
           onClick={() => addLetter('E')}
         >
           e
         </button>
         <button
-          className={`key btn ${letters.R}`}
+          className={keyClass('R')}
           onClick={() => addLetter('R')}
         >
           r
         </button>
         <button
-          className={`key btn ${letters.T}`}
+          className={keyClass('T')}
           onClick={() => addLetter('T')}
         >
           t
         </button>
         <button
-          className={`key btn ${letters.Y}`}
+          className={keyClass('Y')}
           onClick={() => addLetter('Y')}
         >
           y
         </button>
         <button
-          className={`key btn ${letters.U}`}
+          className={keyClass('U')}
           onClick={() => addLetter('U')}
         >
           u
         </button>
         <button
-          className={`key btn ${letters.I}`}
+          className={keyClass('I')}
           onClick={() => addLetter('I')}
         >
           i
         </button>
         <button
-          className={`key btn ${letters.O}`}
+          className={keyClass('O')}
           onClick={() => addLetter('O')}
         >
           o
         </button>
         <button
-          className={`key btn ${letters.P}`}
+          className={keyClass('P')}
           onClick={() => addLetter('P')}
         >
           p
@@ -78,55 +83,55 @@ const KeyBoard = ({ pastWords, addLetter, deleteLetter, submitWord }) => {
       </div>
       <div className='row row-2'>
         <button
-          className={`key btn ${letters.A}`}
+          className={keyClass('A')}
           onClick={() => addLetter('A')}
         >
           a
         </button>
         <button
-          className={`key btn ${letters.S}`}
+          className={keyClass('S')}
           onClick={() => addLetter('S')}
         >
           s
         </button>
         <button
-          className={`key btn ${letters.D}`}
+          className={keyClass('D')}
           onClick={() => addLetter('D')}
         >
           d
         </button>
         <button
-          className={`key btn ${letters.F}`}
+          className={keyClass('F')}
           onClick={() => addLetter('F')}
         >
           f
         </button>
         <button
-          className={`key btn ${letters.G}`}
+          className={keyClass('G')}
           onClick={() => addLetter('G')}
         >
           g
         </button>
         <button
-          className={`key btn ${letters.H}`}
+          className={keyClass('H')}
           onClick={() => addLetter('H')}
         >
           h
         </button>
         <button
-          className={`key btn ${letters.J}`}
+          className={keyClass('J')}
           onClick={() => addLetter('J')}
         >
           j
         </button>
         <button
-          className={`key btn ${letters.K}`}
+          className={keyClass('K')}
           onClick={() => addLetter('K')}
         >
           k
         </button>
         <button
-          className={`key btn ${letters.L}`}
+          className={keyClass('L')}
           onClick={() => addLetter('L')}
         >
           l
@@ -137,43 +142,43 @@ const KeyBoard = ({ pastWords, addLetter, deleteLetter, submitWord }) => {
           <BsArrowReturnLeft className='icon' />
         </button>
         <button
-          className={`key btn ${letters.Z}`}
+          className={keyClass('Z')}
           onClick={() => addLetter('Z')}
         >
           z
         </button>
         <button
-          className={`key btn ${letters.X}`}
+          className={keyClass('X')}
           onClick={() => addLetter('X')}
         >
           x
         </button>
         <button
-          className={`key btn ${letters.C}`}
+          className={keyClass('C')}
           onClick={() => addLetter('C')}
         >
           c
         </button>
         <button
-          className={`key btn ${letters.V}`}
+          className={keyClass('V')}
           onClick={() => addLetter('V')}
         >
           v
         </button>
         <button
-          className={`key btn ${letters.B}`}
+          className={keyClass('B')}
           onClick={() => addLetter('B')}
         >
           b
         </button>
         <button
-          className={`key btn ${letters.N}`}
+          className={keyClass('N')}
           onClick={() => addLetter('N')}
         >
           n
         </button>
         <button
-          className={`key btn ${letters.M}`}
+          className={keyClass('M')}
           onClick={() => addLetter('M')}
         >
           m

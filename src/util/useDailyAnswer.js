@@ -35,6 +35,11 @@ export function useDailyAnswer() {
   return answer
 }
 
+// Counted from local midnight, the same day boundary getAnswer uses. From
+// new Date() directly, diffDays rounds up after noon and the number ran one
+// ahead of the answer.
 export const getTridleNumber = () => {
-  return diffDays(startDate, new Date())
+  const currDate = new Date()
+  currDate.setHours(0, 0, 0, 0)
+  return diffDays(startDate, currDate)
 }

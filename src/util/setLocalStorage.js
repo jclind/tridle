@@ -27,10 +27,14 @@ export const setUserGameStats = (gameStatus, numGuesses) => {
       gameStatus === 'WON' ? currStats.gamesWon + 1 : currStats.gamesWon
     const newGamesLost =
       gameStatus === 'LOST' ? currStats.gamesLost + 1 : currStats.gamesLost
+    // A win continues the streak if the last game was yesterday or today,
+    // and starts a new one of 1 after a gap.
     const newWinStreak =
-      gameStatus === 'WON' && yesterday.getTime() <= currStats.lastUpdated
+      gameStatus !== 'WON'
+        ? 0
+        : yesterday.getTime() <= currStats.lastUpdated
         ? currStats.winStreak + 1
-        : 0
+        : 1
     const newMaxWinStreak =
       currStats.maxWinStreak < newWinStreak
         ? newWinStreak

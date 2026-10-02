@@ -120,7 +120,9 @@ const ChartDistribution = ({ guesses, totalWins }) => {
             <div className='line-container'>
               <div
                 className='line'
-                style={{ width: `${(numGuesses / totalWins) * 100}%` }}
+                style={{
+                  width: `${totalWins ? (numGuesses / totalWins) * 100 : 0}%`,
+                }}
               >
                 {numGuesses}
               </div>
